@@ -12,12 +12,14 @@ import ProductsPage from './pages/ProductsPage';
 import AboutPage from './pages/AboutPage';
 import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
+import SignupPage from './pages/SignUpPage';
 import MyOrderPage from './pages/MyOrderPage';
 import AdminDashboard from './pages/AdminDashboard';
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState(() => {
+    return localStorage.getItem('currentPage') || 'home';
+  });
 
   const [orders, setOrders] = useState(() => {
     const saved = localStorage.getItem('orders');
@@ -28,14 +30,18 @@ const App = () => {
     localStorage.setItem('orders', JSON.stringify(orders));
   }, [orders]);
 
+  useEffect(() => {
+    localStorage.setItem('currentPage', currentPage);
+  }, [currentPage]);
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
         return <HomePage setCurrentPage={setCurrentPage} />;
       case 'products':
-        return <ProductsPage />;
+        return <ProductsPage setCurrentPage={setCurrentPage} />;
       case 'about':
-        return <AboutPage />;
+        return <AboutPage setCurrentPage={setCurrentPage} />;
       case 'cart':
         return <CartPage setOrders={setOrders} setCurrentPage={setCurrentPage} />;
       case 'login':
@@ -45,7 +51,7 @@ const App = () => {
       case 'myorder':
         return <MyOrderPage orders={orders} setCurrentPage={setCurrentPage} />;
       case 'adminDashboard':
-        return <AdminDashboard />;
+        return <AdminDashboard setCurrentPage={setCurrentPage} />;
       default:
         return <HomePage setCurrentPage={setCurrentPage} />;
     }
