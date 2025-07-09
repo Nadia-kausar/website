@@ -1,0 +1,93 @@
+/* ============================
+   ✅ GENERAL RESET + ROOT
+   ============================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ============================
+   ✅ LOGO & UTILITIES
+   ============================ */
+.logo {
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: brightness(1.2);
+}
+
+/* ============================
+   ✅ HEADER & NAV WRAP
+   ============================ */
+.headerContent {
+  flex-wrap: wrap;
+}
+
+.headerInfo {
+  flex-wrap: wrap;
+}
+
+.navList {
+  flex-wrap: wrap;
+}
+
+/* ============================
+   ✅ MEDIA QUERIES
+   ============================ */
+@media (max-width: 1024px) {
+  #root {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .headerInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .navList {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .heroTitle {
+    font-size: 2rem !important;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem !important;
+  }
+
+  .pageTitle {
+    font-size: 2rem !important;
+  }
+}
