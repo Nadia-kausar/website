@@ -31,11 +31,10 @@ export const signup = async (req, res) => {
         _id: newUser._id,
         fullname: newUser.fullname,
         email: newUser.email,
-      }
+      },
     });
-
   } catch (error) {
-    console.log("Signup Error:", error.message);
+    console.error("Signup Error:", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -61,11 +60,10 @@ export const login = async (req, res) => {
         _id: user._id,
         fullname: user.fullname,
         email: user.email,
-      }
+      },
     });
-
   } catch (error) {
-    console.log("Login Error:", error.message);
+    console.error("Login Error:", error.message);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -1,3 +1,4 @@
+// model/user.model.js
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
@@ -8,7 +9,7 @@ const userSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: true, // Prevent duplicate emails
   },
   password: {
     type: String,
