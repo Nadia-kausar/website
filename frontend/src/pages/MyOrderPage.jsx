@@ -1,19 +1,177 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-import { useAuth } from '../context/AuthContext';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 const styles = {
-  // ... [unchanged styles]
+  page: {
+    padding: "40px 24px",
+    fontFamily: "'Poppins', sans-serif",
+    background: "#f9f9fb",
+    minHeight: "100vh",
+    color: "#2D3748",
+    maxWidth: 960,
+    margin: "0 auto",
+  },
+  pageHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 40,
+    flexWrap: "wrap",
+  },
+  pageTitle: {
+    fontSize: 32,
+    fontWeight: 700,
+    margin: 0,
+    flex: "1 1 auto",
+  },
+  backButton: {
+    padding: "12px 24px",
+    background: "#1a202c",
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    cursor: "pointer",
+    fontWeight: 600,
+    fontSize: 16,
+    transition: "background-color 0.3s ease",
+    flex: "0 0 auto",
+  },
+  backButtonHover: {
+    background: "#2d3748",
+  },
+  orderGroup: {
+    marginBottom: 40,
+  },
+  orderDate: {
+    fontSize: 24,
+    fontWeight: 700,
+    marginBottom: 20,
+    color: "#4A5568",
+    borderBottom: "2px solid #CBD5E0",
+    paddingBottom: 8,
+  },
+  orderCard: {
+    background: "#ffffff",
+    border: "1px solid #E2E8F0",
+    borderRadius: 12,
+    padding: 24,
+    marginBottom: 24,
+    boxShadow: "0 8px 16px rgba(0,0,0,0.05)",
+    transition: "box-shadow 0.3s ease",
+  },
+  orderCardHover: {
+    boxShadow: "0 12px 24px rgba(0,0,0,0.1)",
+  },
+  orderHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+    fontSize: 16,
+    fontWeight: 600,
+    letterSpacing: 0.5,
+  },
+  orderStatus: {
+    padding: "6px 16px",
+    borderRadius: 20,
+    fontSize: 14,
+    fontWeight: 700,
+    textTransform: "capitalize",
+    boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
+    userSelect: "none",
+    minWidth: 100,
+    textAlign: "center",
+  },
+  orderItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+    borderBottom: "1px solid #EDF2F7",
+    paddingBottom: 12,
+  },
+  orderItemDetails: {
+    flex: 1,
+    display: "flex",
+    justifyContent: "space-between",
+    gap: 12,
+    fontSize: 15,
+    color: "#2D3748",
+  },
+  orderItemName: {
+    flex: "2 1 200px",
+    fontWeight: 600,
+  },
+  orderSummary: {
+    marginTop: 24,
+    background: "#f0f4f8",
+    padding: 20,
+    borderRadius: 12,
+    border: "1px solid #E2E8F0",
+    color: "#2D3748",
+    fontSize: 15,
+  },
+  orderCustomer: {
+    marginBottom: 16,
+    lineHeight: 1.6,
+    color: "#4A5568",
+  },
+  orderTotal: {
+    fontWeight: 700,
+    fontSize: 18,
+    marginTop: 8,
+    color: "#1a202c",
+    textAlign: "right",
+  },
+  emptyState: {
+    textAlign: "center",
+    marginTop: 80,
+    color: "#4A5568",
+  },
+  animatedImage: {
+    width: "100%",
+    maxWidth: 400,
+    marginBottom: 24,
+    borderRadius: 12,
+    filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))",
+  },
+  primaryButton: {
+    marginTop: 24,
+    padding: "14px 32px",
+    background: "#1a202c",
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    cursor: "pointer",
+    fontWeight: 600,
+    fontSize: 16,
+    transition: "background-color 0.3s ease",
+  },
+  primaryButtonHover: {
+    background: "#2d3748",
+  },
+  loadingText: {
+    paddingTop: 40,
+    fontSize: 18,
+    color: "#718096",
+    textAlign: "center",
+  },
 };
 
 const getStatusColor = (status) => {
   switch (status.toLowerCase()) {
-    case 'completed': return { background: '#e6fffa', color: '#2c7a7b' };
-    case 'processing': return { background: '#fffbea', color: '#b7791f' };
-    case 'shipped': return { background: '#ebf8ff', color: '#2b6cb0' };
-    case 'cancelled': return { background: '#fff5f5', color: '#c53030' };
-    default: return { background: '#edf2f7', color: '#4a5568' };
+    case "completed":
+      return { background: "#e6fffa", color: "#2c7a7b" };
+    case "processing":
+      return { background: "#fffbea", color: "#b7791f" };
+    case "shipped":
+      return { background: "#ebf8ff", color: "#2b6cb0" };
+    case "cancelled":
+      return { background: "#fff5f5", color: "#c53030" };
+    default:
+      return { background: "#edf2f7", color: "#4a5568" };
   }
 };
 
@@ -25,12 +183,12 @@ const MyOrderPage = ({ setCurrentPage }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        if (!user?.email) throw new Error('No user logged in');
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/order/user/${user.email}`);
+        if (!user?.email) throw new Error("No user logged in");
+        const res = await axios.get(`http://localhost:4001/order/user/${user.email}`);
         setOrders(res.data);
       } catch (err) {
         console.error(err);
-        toast.error('Failed to load orders');
+        toast.error("Failed to load orders");
       } finally {
         setLoading(false);
       }
@@ -38,12 +196,14 @@ const MyOrderPage = ({ setCurrentPage }) => {
     fetchOrders();
   }, [user]);
 
-  if (loading) {
-    return <p style={{ textAlign: 'center', paddingTop: '40px' }}>Loading your orders...</p>;
-  }
+  if (loading) return <p style={styles.loadingText}>Loading your orders...</p>;
 
   const grouped = orders.reduce((acc, order) => {
-    const date = new Date(order.date).toLocaleDateString();
+    const date = new Date(order.date).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
     acc[date] = acc[date] || [];
     acc[date].push(order);
     return acc;
@@ -53,7 +213,12 @@ const MyOrderPage = ({ setCurrentPage }) => {
     <div style={styles.page}>
       <div style={styles.pageHeader}>
         <h1 style={styles.pageTitle}>My Order History</h1>
-        <button style={styles.backButton} onClick={() => setCurrentPage('products')}>
+        <button
+          style={styles.backButton}
+          onClick={() => setCurrentPage("products")}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#2d3748")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#1a202c")}
+        >
           Continue Shopping
         </button>
       </div>
@@ -67,7 +232,12 @@ const MyOrderPage = ({ setCurrentPage }) => {
           />
           <h2>No Orders Yet</h2>
           <p>Your purchases will appear here once you place an order.</p>
-          <button style={styles.primaryButton} onClick={() => setCurrentPage('products')}>
+          <button
+            style={styles.primaryButton}
+            onClick={() => setCurrentPage("products")}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#2d3748")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#1a202c")}
+          >
             Discover Products
           </button>
         </div>
@@ -76,23 +246,27 @@ const MyOrderPage = ({ setCurrentPage }) => {
           <div key={date} style={styles.orderGroup}>
             <h2 style={styles.orderDate}>{date}</h2>
             {ordersOnDate.map((o) => (
-              <div key={o._id} style={styles.orderCard}>
+              <div
+                key={o._id}
+                style={styles.orderCard}
+                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.1)")}
+                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 8px 16px rgba(0,0,0,0.05)")}
+              >
                 <div style={styles.orderHeader}>
                   <div>
-                    <strong>Order ID:</strong> <span style={{ color: '#319795' }}>{o._id}</span>
+                    <strong>Order ID:</strong>{" "}
+                    <span style={{ color: "#319795", fontFamily: "'Courier New', Courier, monospace" }}>{o._id}</span>
                   </div>
-                  <div style={{ ...styles.orderStatus, ...getStatusColor(o.status) }}>
-                    {o.status}
-                  </div>
+                  <div style={{ ...styles.orderStatus, ...getStatusColor(o.status) }}>{o.status}</div>
                 </div>
 
-                <h3 style={{ marginBottom: 12 }}>Items</h3>
+                <h3 style={{ marginBottom: 12, fontWeight: 600 }}>Items</h3>
                 {o.items.map((item, index) => (
                   <div key={index} style={styles.orderItem}>
                     <div style={styles.orderItemDetails}>
-                      <div style={{ fontWeight: 600 }}>{item.name}</div>
-                      <div>Unit: ${item.price}</div>
-                      <div>{item.quantity}+</div>
+                      <div style={styles.orderItemName}>{item.name}</div>
+                      <div>Unit: ${item.price.toFixed(2)}</div>
+                      <div>Qty: {item.quantity}</div>
                       <div>Total: ${(item.price * item.quantity).toFixed(2)}</div>
                     </div>
                   </div>
@@ -100,13 +274,15 @@ const MyOrderPage = ({ setCurrentPage }) => {
 
                 <div style={styles.orderSummary}>
                   <div style={styles.orderCustomer}>
-                    <h4 style={{ marginBottom: 8 }}>Customer</h4>
-                    <p><strong>Name:</strong> {o.user.name}</p>
-                    <p><strong>Email:</strong> {o.user.email}</p>
+                    <h4 style={{ marginBottom: 8, fontWeight: 600 }}>Customer</h4>
+                    <p>
+                      <strong>Name:</strong> {o.user.name}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {o.user.email}
+                    </p>
                   </div>
-                  <div style={styles.orderTotal}>
-                    Order Total: ${o.total.toFixed(2)}
-                  </div>
+                  <div style={styles.orderTotal}>Order Total: ${o.total.toFixed(2)}</div>
                 </div>
               </div>
             ))}
