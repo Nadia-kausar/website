@@ -34,6 +34,18 @@ const ProductsPage = () => {
     toast.success(`${product.title} added to cart!`);
   };
 
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await axios.delete(`https://website-backend-project.vercel.app/product/${productId}`);
+      setProducts(products.filter(p => p._id !== productId));
+      toast.success('🗑️ Product deleted successfully');
+    } catch (error) {
+      toast.error('❌ Failed to delete product');
+    }
+  };
+
+  const isAdmin = user?.role === 'admin' || user?.isAdmin;
+
   return (
     <div style={styles.page}>
       <h1 style={styles.title}>🛍️ Explore Products</h1>
@@ -73,6 +85,18 @@ const ProductsPage = () => {
                     userId={user?._id}
                     onReviewSubmit={() => {}}
                   />
+                </div>
+              )}
+
+              {isAdmin && (
+                <div style={styles.adminControls}>
+                  <button
+                    style={styles.deleteBtn}
+                    onClick={() => handleDeleteProduct(product._id)}
+                  >
+                    🗑️ Delete
+                  </button>
+                  {/* Optional: Add an Edit button here */}
                 </div>
               )}
             </div>
@@ -162,6 +186,24 @@ const styles = {
   reviewBox: {
     marginTop: '15px',
     width: '100%',
+  },
+  adminControls: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '10px',
+    marginTop: '10px',
+    width: '100%',
+  },
+  deleteBtn: {
+    backgroundColor: '#d32f2f',
+    color: '#fff',
+    padding: '8px 12px',
+    border: 'none',
+    borderRadius: '6px',
+    fontSize: '14px',
+    cursor: 'pointer',
+    width: '100%',
+    fontWeight: 'bold',
   },
 };
 
