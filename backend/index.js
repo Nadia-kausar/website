@@ -23,10 +23,10 @@ app.use(express.json());
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
 .then(() => console.log('✅ Connected to MongoDB Atlas'))
-.catch(err => {
+.catch((err) => {
   console.error('❌ MongoDB connection error:', err.message);
   process.exit(1);
 });
@@ -38,9 +38,13 @@ app.use('/admin', adminRoute);
 app.use('/product', productRoute);
 app.use('/review', reviewRoute);
 
-// Root route
+// Root route (fixed)
 app.get('/', (req, res) => {
-  res.send('📘 BookStore API is running');
+  res.json({
+    message: '📘 BookStore API is running',
+    activeStatus: true,
+    error: false,
+  });
 });
 
 // Start the server
