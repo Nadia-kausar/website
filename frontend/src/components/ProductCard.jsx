@@ -1,3 +1,4 @@
+
 // src/components/ProductCard.jsx
 
 import React from "react";
@@ -9,15 +10,20 @@ const ProductCard = ({ product }) => {
 
   return (
     <div style={styles.productCard}>
-      {/* Show emoji or default if no image field */}
       <div style={styles.productImage}>
-        {product.image || '📚'}
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            style={styles.productImageTag}
+          />
+        ) : (
+          <span style={{ fontSize: "3rem" }}>📚</span>
+        )}
       </div>
 
       <h3 style={styles.productName}>{product.name}</h3>
-      <p style={styles.productPrice}>
-        ${product.price}
-      </p>
+      <p style={styles.productPrice}>${product.price}</p>
 
       <button
         style={styles.addToCartButton}

@@ -12,7 +12,7 @@ export const styles = {
   header: {
     backgroundColor: '#000000',
     color: '#ffffff',
-    padding: '2rem 1rem',
+    padding: '1.5rem 1rem',
     borderBottom: '2px solid #333333'
   },
   headerContent: {
@@ -20,28 +20,34 @@ export const styles = {
     margin: '0 auto',
     padding: '0 1rem',
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    gap: '1rem',
+    textAlign: 'center'
   },
   logo: {
     fontSize: '1.5rem',
     fontWeight: 'bold',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    flexGrow: 1
   },
   headerInfo: {
     display: 'flex',
     alignItems: 'center',
-    gap: '1.5rem',
+    gap: '1rem',
     flexWrap: 'wrap',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexGrow: 2
   },
   cartIcon: {
     backgroundColor: '#333333',
-    padding: '0.8rem 1.2rem',
+    padding: '0.6rem 1rem',
     borderRadius: '4px',
     cursor: 'pointer',
-    fontSize: '0.9rem'
+    fontSize: '0.9rem',
+    whiteSpace: 'nowrap'
   },
 
   // Navigation Styles
@@ -69,7 +75,7 @@ export const styles = {
   },
   navLink: {
     display: 'block',
-    padding: '0.8rem 1.5rem',
+    padding: '0.7rem 1.2rem',
     textDecoration: 'none',
     color: '#000000',
     backgroundColor: 'transparent',
@@ -79,7 +85,8 @@ export const styles = {
     transition: 'all 0.3s',
     borderRadius: '6px',
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    whiteSpace: 'nowrap'
   },
   navLinkActive: {
     backgroundColor: '#000000',
@@ -107,7 +114,7 @@ export const styles = {
   // Hero Section
   hero: {
     textAlign: 'center',
-    padding: '3rem 1rem',
+    padding: '2.5rem 1rem',
     backgroundColor: '#f8f8f8',
     margin: '2rem 0',
     borderRadius: '8px'
@@ -117,7 +124,7 @@ export const styles = {
     margin: '0 auto'
   },
   heroTitle: {
-    fontSize: '2.2rem',
+    fontSize: '2rem',
     marginBottom: '1rem'
   },
   heroSubtitle: {
@@ -128,18 +135,20 @@ export const styles = {
   heroButton: {
     backgroundColor: '#000000',
     color: '#ffffff',
-    padding: '1rem 2rem',
+    padding: '0.8rem 1.5rem',
     border: 'none',
     borderRadius: '4px',
     fontSize: '1rem',
     cursor: 'pointer',
-    transition: 'background-color 0.3s'
+    transition: 'background-color 0.3s',
+    width: '100%',
+    maxWidth: '220px'
   },
 
   // Features
   featuresGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
     gap: '1.5rem',
     marginTop: '2rem'
   },
@@ -147,10 +156,70 @@ export const styles = {
   // Products
   productsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
     gap: '1.5rem',
     marginTop: '2rem'
   },
+  // Responsive Product Card
+productCard: {
+  backgroundColor: '#ffffff',
+  border: '1px solid #e0e0e0',
+  borderRadius: '8px',
+  padding: '1rem',
+  textAlign: 'center',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  height: '100%',
+  transition: 'transform 0.2s ease',
+  cursor: 'pointer',
+},
+
+productImage: {
+  width: '100%',
+  height: '150px',
+  backgroundColor: '#f9f9f9',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '6px',
+  overflow: 'hidden',
+  marginBottom: '1rem'
+},
+
+productImageTag: {
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain'
+},
+
+productName: {
+  fontSize: '1.1rem',
+  fontWeight: 'bold',
+  marginBottom: '0.5rem',
+  wordWrap: 'break-word'
+},
+
+productPrice: {
+  fontSize: '1rem',
+  color: '#444444',
+  marginBottom: '1rem'
+},
+
+addToCartButton: {
+  backgroundColor: '#000000',
+  color: '#ffffff',
+  border: 'none',
+  padding: '0.8rem',
+  fontSize: '1rem',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  transition: 'background-color 0.3s ease',
+  width: '100%',
+  marginTop: 'auto'
+}
+,
 
   // Footer
   footer: {
@@ -173,4 +242,4 @@ export const styles = {
     maxWidth: '1200px',
     margin: '0 auto'
   }
-}
+};

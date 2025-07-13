@@ -9,32 +9,34 @@ const LoginPage = ({ setCurrentPage }) => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
+  const backendURL = import.meta.env.VITE_API_URL || 'https://website-backend-project.vercel.app';
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    if (!email || !password) {
+    if (!email.trim() || !password.trim()) {
       toast.error('Please fill in all fields');
       setLoading(false);
       return;
     }
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/login`,
-        { email, password }
-      );
+      const res = await axios.post(`${backendURL}/user/login`, {
+        email: email.trim(),
+        password: password.trim(),
+      });
 
-      if (res.data && res.data.user) {
+      if (res.data?.user) {
         localStorage.setItem('Users', JSON.stringify(res.data.user));
         login(res.data.user);
-        toast.success('Login Successful');
+        toast.success('✅ Login successful');
         setCurrentPage('home');
       } else {
-        toast.error('Invalid credentials');
+        toast.error('❌ Invalid credentials');
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      toast.error(err.response?.data?.message || '❌ Login failed');
     }
 
     setLoading(false);
@@ -49,6 +51,7 @@ const LoginPage = ({ setCurrentPage }) => {
       backgroundColor: '#000',
       color: '#fff',
       fontFamily: "'Poppins', sans-serif",
+      padding: '20px',
     },
     form: {
       backgroundColor: '#111',
@@ -73,16 +76,17 @@ const LoginPage = ({ setCurrentPage }) => {
       backgroundColor: '#222',
       color: '#fff',
       fontSize: '14px',
+      outline: 'none',
     },
     button: {
       width: '100%',
       padding: '12px',
-      backgroundColor: '#fff',
+      backgroundColor: loading ? '#aaa' : '#fff',
       color: '#000',
       border: 'none',
       borderRadius: '8px',
       fontWeight: 'bold',
-      cursor: 'pointer',
+      cursor: loading ? 'not-allowed' : 'pointer',
       transition: '0.3s ease',
     },
     switchText: {
@@ -94,6 +98,7 @@ const LoginPage = ({ setCurrentPage }) => {
       color: '#1e90ff',
       cursor: 'pointer',
       fontWeight: 'bold',
+      textDecoration: 'underline',
     },
   };
 
@@ -121,11 +126,8 @@ const LoginPage = ({ setCurrentPage }) => {
           {loading ? 'Logging in...' : 'Login'}
         </button>
         <p style={styles.switchText}>
-          Don't have an account?{' '}
-          <span
-            onClick={() => setCurrentPage('signup')}
-            style={styles.switchLink}
-          >
+          Don&apos;t have an account?{' '}
+          <span onClick={() => setCurrentPage('signup')} style={styles.switchLink}>
             Sign up
           </span>
         </p>

@@ -68,6 +68,7 @@ const AdminAddProductPage = () => {
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>➕ Add New Product</h2>
+
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           name="title"
@@ -123,7 +124,7 @@ const AdminAddProductPage = () => {
                 (e.currentTarget.style.background = '#111')
               }
             >
-              <div>
+              <div style={styles.productInfo}>
                 <strong>{p.title}</strong> — {p.author} (${p.price})
               </div>
               <button onClick={() => handleDelete(p._id)} style={styles.deleteBtn}>
@@ -139,31 +140,36 @@ const AdminAddProductPage = () => {
 
 const styles = {
   container: {
-    padding: '40px 24px',
+    padding: '32px 16px',
     fontFamily: 'Poppins, sans-serif',
     background: '#000',
     color: '#f5f5f5',
     minHeight: '100vh',
   },
   heading: {
-    fontSize: '28px',
-    marginBottom: '24px',
+    fontSize: '24px',
+    marginBottom: '20px',
     fontWeight: '700',
+    textAlign: 'center',
   },
   subheading: {
-    marginTop: '40px',
-    fontSize: '22px',
+    marginTop: '36px',
+    fontSize: '20px',
     fontWeight: '600',
+    textAlign: 'center',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
-    maxWidth: '400px',
+    maxWidth: '100%',
+    width: '100%',
+    maxWidth: '500px',
     background: '#111',
     padding: '20px',
     borderRadius: '12px',
     border: '1px solid #333',
+    margin: '0 auto',
   },
   input: {
     padding: '10px',
@@ -171,6 +177,7 @@ const styles = {
     border: '1px solid #555',
     backgroundColor: '#222',
     color: '#fff',
+    width: '100%',
   },
   textarea: {
     padding: '10px',
@@ -179,40 +186,51 @@ const styles = {
     backgroundColor: '#222',
     color: '#fff',
     minHeight: '80px',
+    width: '100%',
   },
   button: {
     background: '#00ffc8',
     color: '#000',
-    padding: '10px 16px',
+    padding: '12px',
     fontWeight: '600',
     borderRadius: '8px',
     cursor: 'pointer',
     border: 'none',
-    marginTop: '10px',
+    width: '100%',
   },
   list: {
     listStyle: 'none',
     padding: 0,
     marginTop: '20px',
+    maxWidth: '100%',
+    width: '100%',
+    maxWidth: '600px',
+    margin: '20px auto 0',
   },
   item: {
     background: '#111',
-    padding: '16px',
+    padding: '14px',
     borderRadius: '10px',
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'column',
+    gap: '8px',
     border: '1px solid #333',
     marginBottom: '12px',
     transition: 'background 0.2s',
   },
+  productInfo: {
+    fontSize: '0.95rem',
+    wordBreak: 'break-word',
+  },
   deleteBtn: {
     background: 'red',
     color: '#fff',
-    padding: '6px 12px',
+    padding: '8px 12px',
     border: 'none',
     borderRadius: '6px',
     cursor: 'pointer',
+    alignSelf: 'flex-end',
+    fontSize: '0.9rem',
   },
 };
 

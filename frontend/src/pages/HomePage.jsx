@@ -2,22 +2,15 @@ import React from 'react';
 
 const HomePageBW = () => {
   const [width, setWidth] = React.useState(window.innerWidth);
-  const [productHoverIndex, setProductHoverIndex] = React.useState(null);
-  const [shortImageHoverIndex, setShortImageHoverIndex] = React.useState(null);
+  const [hoverIndex, setHoverIndex] = React.useState(null);
+  const [shortHoverIndex, setShortHoverIndex] = React.useState(null);
   const [email, setEmail] = React.useState('');
   const [subscribed, setSubscribed] = React.useState(false);
 
   React.useEffect(() => {
-    let timeoutId = null;
-    const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => setWidth(window.innerWidth), 150);
-    };
+    const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const isMobile = width <= 768;
@@ -52,16 +45,16 @@ const HomePageBW = () => {
       position: 'relative',
       zIndex: 1,
       color: '#fff',
-      padding: isMobile ? '0 10px' : '0 20px',
-      maxWidth: isMobile ? '90%' : '800px',
+      padding: '0 20px',
+      maxWidth: '800px',
     },
     heroTitle: {
-      fontSize: isMobile ? '2.2rem' : '3.5rem',
+      fontSize: isMobile ? '2.4rem' : '3.8rem',
       fontWeight: '700',
       marginBottom: '1rem',
     },
     heroSubtitle: {
-      fontSize: isMobile ? '1rem' : '1.3rem',
+      fontSize: isMobile ? '1rem' : '1.4rem',
       fontWeight: '300',
     },
     section: {
@@ -90,8 +83,7 @@ const HomePageBW = () => {
       boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
       padding: '16px',
       textAlign: 'center',
-      transition: 'transform 0.3s, box-shadow 0.3s',
-      outline: 'none',
+      transition: '0.3s',
       cursor: 'pointer',
     },
     productCardHover: {
@@ -128,7 +120,6 @@ const HomePageBW = () => {
       objectFit: 'cover',
       borderRadius: '8px',
       transition: 'transform 0.3s',
-      outline: 'none',
       cursor: 'pointer',
     },
     shortImageHover: {
@@ -142,8 +133,7 @@ const HomePageBW = () => {
       gap: '12px',
       marginTop: '20px',
       maxWidth: '480px',
-      marginLeft: 'auto',
-      marginRight: 'auto',
+      marginInline: 'auto',
     },
     emailInput: {
       padding: '12px 16px',
@@ -151,7 +141,6 @@ const HomePageBW = () => {
       border: '1px solid #ccc',
       fontSize: '1rem',
       width: isMobile ? '100%' : '280px',
-      maxWidth: '100%',
     },
     subscribeButton: {
       background: '#f57224',
@@ -161,7 +150,6 @@ const HomePageBW = () => {
       borderRadius: '6px',
       fontSize: '1rem',
       cursor: 'pointer',
-      transition: 'background 0.3s',
     },
     successMessage: {
       marginTop: '12px',
@@ -207,144 +195,113 @@ const HomePageBW = () => {
 
   const handleSubscribe = (e) => {
     e.preventDefault();
-    if (!email.trim()) return;
+    if (!email.trim() || !email.includes("@")) return;
     setSubscribed(true);
     setEmail('');
   };
 
   return (
     <div style={styles.page}>
-      {/* Hero */}
-      <main>
-        <section
-          style={styles.hero}
-          aria-label="Hero section with site introduction"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1400&q=80"
-            style={styles.heroImage}
-            alt="Hero background"
-          />
-          <div style={styles.heroContent}>
-            <h1 style={styles.heroTitle}>ShopEasy</h1>
-            <p style={styles.heroSubtitle}>
-              Your one-stop shop for amazing deals & quality products.
-            </p>
-          </div>
-        </section>
+      {/* Hero Section */}
+      <section style={styles.hero}>
+        <img
+          src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1400&q=80"
+          alt="Hero background"
+          style={styles.heroImage}
+        />
+        <div style={styles.heroContent}>
+          <h1 style={styles.heroTitle}>ShopEasy</h1>
+          <p style={styles.heroSubtitle}>Your one-stop shop for amazing deals & quality products.</p>
+        </div>
+      </section>
 
-        {/* Featured Products */}
-        <section
-          style={styles.section}
-          aria-label="Featured products list"
-        >
-          <h2 style={styles.sectionTitle}>Featured Products</h2>
-          <div style={styles.productsGrid}>
-            {featuredProducts.map((product, idx) => (
-              <div
-                key={product.id}
-                tabIndex={0}
-                onFocus={() => setProductHoverIndex(idx)}
-                onBlur={() => setProductHoverIndex(null)}
-                onMouseEnter={() => setProductHoverIndex(idx)}
-                onMouseLeave={() => setProductHoverIndex(null)}
-                style={{
-                  ...styles.productCard,
-                  ...(productHoverIndex === idx ? styles.productCardHover : {}),
-                }}
-                aria-label={`${product.title}, priced at ${product.price}`}
-              >
-                <img
-                  src={product.img}
-                  alt={product.title}
-                  style={styles.productImage}
-                />
-                <h3 style={styles.productTitle}>{product.title}</h3>
-                <p style={styles.productPrice}>{product.price}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* More to Explore */}
-        <section
-          style={styles.section}
-          aria-label="More products to explore"
-        >
-          <h2 style={styles.sectionTitle}>More to Explore</h2>
-          <div style={styles.shortImageContainer}>
-            {shortImages.map((img, idx) => (
+      {/* Featured Products */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Featured Products</h2>
+        <div style={styles.productsGrid}>
+          {featuredProducts.map((product, idx) => (
+            <div
+              key={product.id}
+              onMouseEnter={() => setHoverIndex(idx)}
+              onMouseLeave={() => setHoverIndex(null)}
+              style={{
+                ...styles.productCard,
+                ...(hoverIndex === idx ? styles.productCardHover : {}),
+              }}
+            >
               <img
-                key={idx}
-                src={img}
-                alt="Explore product"
-                tabIndex={0}
-                onFocus={() => setShortImageHoverIndex(idx)}
-                onBlur={() => setShortImageHoverIndex(null)}
-                onMouseEnter={() => setShortImageHoverIndex(idx)}
-                onMouseLeave={() => setShortImageHoverIndex(null)}
-                style={{
-                  ...styles.shortImage,
-                  ...(shortImageHoverIndex === idx ? styles.shortImageHover : {}),
-                }}
-                loading="lazy"
+                src={product.img}
+                alt={product.title}
+                style={styles.productImage}
               />
-            ))}
-          </div>
-        </section>
+              <h3 style={styles.productTitle}>{product.title}</h3>
+              <p style={styles.productPrice}>{product.price}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-        {/* Testimonials */}
-        <section
-          style={styles.section}
-          aria-label="Customer testimonials"
-        >
-          <h2 style={styles.sectionTitle}>What Our Customers Say</h2>
-          <div style={styles.productsGrid}>
-            <article style={styles.productCard}>
-              <p>"Fast delivery & amazing quality!"</p>
-              <strong>- Sarah J.</strong>
-            </article>
-            <article style={styles.productCard}>
-              <p>"Always find what I need — love it!"</p>
-              <strong>- Mike T.</strong>
-            </article>
-            <article style={styles.productCard}>
-              <p>"Excellent support and service."</p>
-              <strong>- Emily R.</strong>
-            </article>
-          </div>
-        </section>
-
-        {/* Newsletter */}
-        <section
-          style={styles.section}
-          aria-label="Subscribe to newsletter"
-        >
-          <h2 style={styles.sectionTitle}>Stay Updated</h2>
-          <p style={{ textAlign: 'center' }}>
-            Subscribe for deals, updates & more.
-          </p>
-          <form style={styles.newsletterForm} onSubmit={handleSubscribe} noValidate>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              style={styles.emailInput}
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              aria-label="Email address"
+      {/* More to Explore */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>More to Explore</h2>
+        <div style={styles.shortImageContainer}>
+          {shortImages.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt="Explore"
+              onMouseEnter={() => setShortHoverIndex(idx)}
+              onMouseLeave={() => setShortHoverIndex(null)}
+              style={{
+                ...styles.shortImage,
+                ...(shortHoverIndex === idx ? styles.shortImageHover : {}),
+              }}
+              loading="lazy"
             />
-            <button type="submit" style={styles.subscribeButton}>
-              Subscribe
-            </button>
-          </form>
-          {subscribed && (
-            <p style={styles.successMessage} role="alert">
-              Thank you for subscribing!
-            </p>
-          )}
-        </section>
-      </main>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>What Our Customers Say</h2>
+        <div style={styles.productsGrid}>
+          <article style={styles.productCard}>
+            <p>"Fast delivery & amazing quality!"</p>
+            <strong>- Sarah J.</strong>
+          </article>
+          <article style={styles.productCard}>
+            <p>"Always find what I need — love it!"</p>
+            <strong>- Mike T.</strong>
+          </article>
+          <article style={styles.productCard}>
+            <p>"Excellent support and service."</p>
+            <strong>- Emily R.</strong>
+          </article>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Stay Updated</h2>
+        <p style={{ textAlign: 'center' }}>Subscribe for deals, updates & more.</p>
+        <form onSubmit={handleSubscribe} style={styles.newsletterForm} noValidate>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            style={styles.emailInput}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit" style={styles.subscribeButton}>
+            Subscribe
+          </button>
+        </form>
+        {subscribed && (
+          <p style={styles.successMessage}>Thank you for subscribing!</p>
+        )}
+      </section>
     </div>
   );
 };

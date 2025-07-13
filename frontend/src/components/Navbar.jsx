@@ -9,16 +9,22 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Handle window resize for responsiveness
+  // Update isMobile state on window resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleAuthClick = () => {
+  const handleLogout = () => {
     logout();
     setCurrentPage('login');
+    if (isMobile) setMenuOpen(false);
+  };
+
+  const handleNavClick = (page) => {
+    setCurrentPage(page);
+    if (isMobile) setMenuOpen(false);
   };
 
   const navButtonStyle = (active) => ({
@@ -29,9 +35,10 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
     borderRadius: '6px',
     fontWeight: '600',
     cursor: 'pointer',
-    transition: '0.3s ease',
+    transition: 'all 0.3s ease',
     width: isMobile ? '100%' : 'auto',
-    textAlign: 'left',
+    textAlign: isMobile ? 'left' : 'center',
+    fontSize: '1rem',
   });
 
   const navLinks = (
@@ -39,10 +46,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
       {['home', 'products', 'about', 'cart', 'myorder'].map((page) => (
         <button
           key={page}
-          onClick={() => {
-            setCurrentPage(page);
-            if (isMobile) setMenuOpen(false);
-          }}
+          onClick={() => handleNavClick(page)}
           style={navButtonStyle(currentPage === page)}
         >
           {page === 'cart'
@@ -53,10 +57,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
 
       {isAuthenticated && (
         <button
-          onClick={() => {
-            setCurrentPage('adminDashboard');
-            if (isMobile) setMenuOpen(false);
-          }}
+          onClick={() => handleNavClick('adminDashboard')}
           style={navButtonStyle(currentPage === 'adminDashboard')}
         >
           Dashboard
@@ -64,10 +65,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
       )}
 
       <button
-        onClick={() => {
-          handleAuthClick();
-          if (isMobile) setMenuOpen(false);
-        }}
+        onClick={handleLogout}
         style={navButtonStyle(false)}
       >
         {isAuthenticated ? 'Logout' : 'Login'}
@@ -76,47 +74,26 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
   );
 
   return (
-    <nav style={{
-      backgroundColor: '#000',
-      color: '#fff',
-      padding: '1rem',
-      borderBottom: '2px solid #fff',
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      width: '100%',
-    }}>
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-      }}>
+    <nav style={styles.nav}>
+      <div style={styles.container}>
         {/* Logo */}
         <div
-          style={{
-            fontWeight: 'bold',
-            fontSize: '1.4rem',
-            cursor: 'pointer',
-            color: '#fff',
-          }}
-          onClick={() => setCurrentPage('home')}
+          style={styles.logo}
+          onClick={() => handleNavClick('home')}
         >
           ShopEasy
         </div>
 
-        {/* Hamburger Menu (Mobile) */}
+        {/* Hamburger Menu */}
         {isMobile && (
-          <div onClick={() => setMenuOpen(!menuOpen)} style={{ cursor: 'pointer' }}>
-            <div style={{ width: '25px', height: '3px', backgroundColor: '#fff', margin: '4px 0' }} />
-            <div style={{ width: '25px', height: '3px', backgroundColor: '#fff', margin: '4px 0' }} />
-            <div style={{ width: '25px', height: '3px', backgroundColor: '#fff', margin: '4px 0' }} />
+          <div onClick={() => setMenuOpen(!menuOpen)} style={styles.hamburger}>
+            <div style={styles.line} />
+            <div style={styles.line} />
+            <div style={styles.line} />
           </div>
         )}
 
-        {/* Nav Links */}
+        {/* Navigation Links */}
         <div
           style={{
             display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
@@ -131,6 +108,46 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
       </div>
     </nav>
   );
+};
+
+const styles = {
+  nav: {
+    backgroundColor: '#000',
+    color: '#fff',
+    padding: '1rem',
+    borderBottom: '2px solid #fff',
+    position: 'sticky',
+    top: 0,
+    zIndex: 1000,
+    width: '100%',
+  },
+  container: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  logo: {
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
+    color: '#fff',
+    cursor: 'pointer',
+  },
+  hamburger: {
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    gap: '4px',
+  },
+  line: {
+    width: '25px',
+    height: '3px',
+    backgroundColor: '#fff',
+    transition: 'all 0.3s ease',
+  },
 };
 
 export default Navbar;

@@ -28,19 +28,19 @@ const SignupPage = ({ setCurrentPage }) => {
     const { fullname, email, password, confirmPassword } = formData;
 
     if (!fullname || !email || !password || !confirmPassword) {
-      toast.error('Please fill in all fields');
+      toast.error('❗ Please fill in all fields');
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
+      toast.error('❗ Passwords do not match');
       setLoading(false);
       return;
     }
 
     if (password.length < 6) {
-      toast.error('Password must be at least 6 characters');
+      toast.error('❗ Password must be at least 6 characters');
       setLoading(false);
       return;
     }
@@ -53,14 +53,13 @@ const SignupPage = ({ setCurrentPage }) => {
       });
 
       if (res.data && res.data.user) {
-        toast.success('Signup successful! Welcome 🎉');
-
-        localStorage.setItem("Users", JSON.stringify(res.data.user));
+        toast.success('✅ Signup successful! Welcome 🎉');
+        localStorage.setItem('Users', JSON.stringify(res.data.user));
         login(res.data.user);
         setCurrentPage('home');
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Signup failed');
+      toast.error(err.response?.data?.message || '❌ Signup failed');
     }
 
     setLoading(false);
@@ -81,6 +80,7 @@ const SignupPage = ({ setCurrentPage }) => {
             required
             style={styles.input}
             autoComplete="name"
+            autoFocus
           />
           <input
             type="email"
@@ -118,9 +118,15 @@ const SignupPage = ({ setCurrentPage }) => {
             disabled={loading}
             style={{
               ...styles.button,
-              backgroundColor: loading ? '#666' : '#fff',
-              color: loading ? '#ddd' : '#000',
+              backgroundColor: loading ? '#555' : '#fff',
+              color: loading ? '#ccc' : '#000',
               cursor: loading ? 'not-allowed' : 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              if (!loading) e.currentTarget.style.backgroundColor = '#f0f0f0';
+            }}
+            onMouseLeave={(e) => {
+              if (!loading) e.currentTarget.style.backgroundColor = '#fff';
             }}
           >
             {loading ? 'Signing up...' : 'Sign Up'}

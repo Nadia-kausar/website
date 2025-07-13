@@ -4,18 +4,18 @@ import toast from 'react-hot-toast';
 
 const backendURL = 'https://website-backend-project.vercel.app';
 
-const ReviewPage = () => {
+const ReviewPage = ({ productId, userId }) => {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState({ rating: 0, message: '' });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchReviews();
-  }, []);
+  }, [productId]);
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get(`${backendURL}/review`);
+      const res = await axios.get(`${backendURL}/review/${productId}`);
       setReviews(res.data.reverse());
     } catch (err) {
       toast.error('Failed to load reviews');
@@ -30,7 +30,11 @@ const ReviewPage = () => {
 
     setLoading(true);
     try {
-      await axios.post(`${backendURL}/review`, newReview);
+      await axios.post(`${backendURL}/review`, {
+        ...newReview,
+        productId,
+        userId,
+      });
       toast.success('Review submitted!');
       setNewReview({ rating: 0, message: '' });
       fetchReviews();
@@ -53,7 +57,7 @@ const ReviewPage = () => {
             <div key={idx} style={styles.card}>
               <div style={styles.cardTop}>
                 <div style={styles.left}>
-                  <strong>Anonymous</strong>
+                  <strong>{r.user?.name || 'Anonymous'}</strong>
                   <span style={styles.date}>
                     {new Date(r.createdAt).toLocaleDateString()}
                   </span>

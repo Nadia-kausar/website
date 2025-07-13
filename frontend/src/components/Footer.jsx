@@ -6,7 +6,10 @@ const Footer = () => {
       <div className="footer-sections">
         <div className="footer-block">
           <h4>About ShopEasy</h4>
-          <p>ShopEasy is your one-stop online marketplace, offering a wide range of quality products at amazing prices.</p>
+          <p>
+            ShopEasy is your one-stop online marketplace, offering a wide range of quality
+            products at amazing prices.
+          </p>
         </div>
 
         <div className="footer-block">
@@ -41,17 +44,16 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>© 2025 ShopEasy - All Rights Reserved</p>
+        <p>© 2025 ShopEasy — All Rights Reserved</p>
         <p>Powered by ShopEasy Tech</p>
       </div>
 
       <style>{`
         .custom-footer {
-          background: #fff;
-          color: #333;
+          background: #000;
+          color: #fff;
           font-family: 'Poppins', sans-serif;
           padding: 2rem 1rem;
-          text-align: center;
         }
 
         .footer-sections {
@@ -59,22 +61,25 @@ const Footer = () => {
           flex-direction: column;
           align-items: center;
           gap: 2rem;
-          margin-bottom: 1.5rem;
+          margin-bottom: 2rem;
         }
 
         .footer-block {
           max-width: 300px;
+          text-align: center;
         }
 
         .footer-block h4 {
           font-size: 1.1rem;
           margin-bottom: 0.5rem;
-          color: #111;
+          color: #fff;
         }
 
-        .footer-block p {
+        .footer-block p,
+        .footer-block a {
           font-size: 0.95rem;
-          color: #555;
+          color: #ccc;
+          transition: color 0.3s ease;
         }
 
         .footer-block ul {
@@ -84,24 +89,23 @@ const Footer = () => {
         }
 
         .footer-block li {
-          margin: 0.3rem 0;
+          margin: 0.4rem 0;
         }
 
         .footer-block a {
-          color: #555;
           text-decoration: none;
-          font-size: 0.95rem;
         }
 
         .footer-block a:hover {
-          color: #007bff;
+          color: #1e90ff;
         }
 
         .footer-bottom {
-          border-top: 1px solid #ddd;
+          border-top: 1px solid #444;
           padding-top: 1rem;
           font-size: 0.85rem;
-          color: #777;
+          color: #999;
+          text-align: center;
         }
 
         @media (min-width: 768px) {
@@ -109,20 +113,21 @@ const Footer = () => {
             flex-direction: row;
             justify-content: space-between;
             align-items: flex-start;
-            text-align: left;
             flex-wrap: wrap;
+            text-align: left;
           }
 
           .footer-block {
             max-width: none;
             width: 220px;
+            text-align: left;
           }
 
           .footer-bottom {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            text-align: left;
+            padding-top: 1.5rem;
           }
         }
       `}</style>

@@ -59,21 +59,23 @@ const ProductsPage = () => {
               {product.author?.name && (
                 <p style={styles.author}>By: {product.author.name}</p>
               )}
-              <p style={styles.price}>Rs. {product.price.toFixed(2)}</p>
-              <p style={styles.desc}>{product.description}</p>
+              <p style={styles.price}>Rs. {Number(product.price).toFixed(2)}</p>
+              <p style={styles.desc}>
+                {product.description || 'No description available.'}
+              </p>
 
               <button
                 style={styles.cartBtn}
                 onClick={() => handleAddToCart(product)}
+                aria-label={`Add ${product.title} to cart`}
               >
                 🛒 Add to Cart
               </button>
 
               <button
                 style={styles.reviewBtn}
-                onClick={() =>
-                  setShowReviewFor(isVisible ? null : product._id)
-                }
+                onClick={() => setShowReviewFor(isVisible ? null : product._id)}
+                aria-label={`Toggle reviews for ${product.title}`}
               >
                 {isVisible ? 'Hide Reviews' : 'View Reviews'}
               </button>
@@ -93,10 +95,10 @@ const ProductsPage = () => {
                   <button
                     style={styles.deleteBtn}
                     onClick={() => handleDeleteProduct(product._id)}
+                    aria-label={`Delete ${product.title}`}
                   >
                     🗑️ Delete
                   </button>
-                  {/* Optional: Add an Edit button here */}
                 </div>
               )}
             </div>

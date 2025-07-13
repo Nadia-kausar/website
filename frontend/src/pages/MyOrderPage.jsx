@@ -74,7 +74,6 @@ const styles = {
     fontWeight: 700,
     textTransform: "capitalize",
     boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
-    userSelect: "none",
     minWidth: 100,
     textAlign: "center",
   },
@@ -93,6 +92,7 @@ const styles = {
     gap: 12,
     fontSize: 15,
     color: "#2D3748",
+    flexWrap: "wrap",
   },
   orderItemName: {
     flex: "2 1 200px",
@@ -104,7 +104,6 @@ const styles = {
     padding: 20,
     borderRadius: 12,
     border: "1px solid #E2E8F0",
-    color: "#2D3748",
     fontSize: 15,
   },
   orderCustomer: {
@@ -141,7 +140,6 @@ const styles = {
     cursor: "pointer",
     fontWeight: 600,
     fontSize: 16,
-    transition: "background-color 0.3s ease",
   },
   loadingText: {
     paddingTop: 40,
@@ -152,7 +150,7 @@ const styles = {
 };
 
 const getStatusColor = (status) => {
-  switch (status.toLowerCase()) {
+  switch (status?.toLowerCase()) {
     case "completed":
       return { background: "#e6fffa", color: "#2c7a7b" };
     case "processing":
@@ -175,9 +173,7 @@ const MyOrderPage = ({ setCurrentPage }) => {
     const fetchOrders = async () => {
       try {
         if (!user?.email) throw new Error("No user logged in");
-        const res = await axios.get(
-          `https://website-backend-project.vercel.app/order/user/${user.email}`
-        );
+        const res = await axios.get(`https://website-backend-project.vercel.app/order/user/${user.email}`);
         setOrders(res.data);
       } catch (err) {
         console.error(err);
@@ -228,8 +224,6 @@ const MyOrderPage = ({ setCurrentPage }) => {
           <button
             style={styles.primaryButton}
             onClick={() => setCurrentPage("products")}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#2d3748")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#1a202c")}
           >
             Discover Products
           </button>
@@ -241,16 +235,14 @@ const MyOrderPage = ({ setCurrentPage }) => {
             {ordersOnDate.map((o) => (
               <div
                 key={o._id}
-                style={styles.orderCard}
+                style={{ ...styles.orderCard }}
                 onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.1)")}
                 onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 8px 16px rgba(0,0,0,0.05)")}
               >
                 <div style={styles.orderHeader}>
                   <div>
                     <strong>Order ID:</strong>{" "}
-                    <span style={{ color: "#319795", fontFamily: "'Courier New', Courier, monospace" }}>
-                      {o._id}
-                    </span>
+                    <span style={{ color: "#319795", fontFamily: "monospace" }}>{o._id}</span>
                   </div>
                   <div style={{ ...styles.orderStatus, ...getStatusColor(o.status) }}>{o.status}</div>
                 </div>
@@ -260,9 +252,9 @@ const MyOrderPage = ({ setCurrentPage }) => {
                   <div key={index} style={styles.orderItem}>
                     <div style={styles.orderItemDetails}>
                       <div style={styles.orderItemName}>{item.name}</div>
-                      <div>Unit: ${item.price.toFixed(2)}</div>
+                      <div>Unit: Rs. {item.price.toFixed(2)}</div>
                       <div>Qty: {item.quantity}</div>
-                      <div>Total: ${(item.price * item.quantity).toFixed(2)}</div>
+                      <div>Total: Rs. {(item.price * item.quantity).toFixed(2)}</div>
                     </div>
                   </div>
                 ))}
@@ -270,10 +262,10 @@ const MyOrderPage = ({ setCurrentPage }) => {
                 <div style={styles.orderSummary}>
                   <div style={styles.orderCustomer}>
                     <h4 style={{ marginBottom: 8, fontWeight: 600 }}>Customer</h4>
-                    <p><strong>Name:</strong> {o.user.name}</p>
-                    <p><strong>Email:</strong> {o.user.email}</p>
+                    <p><strong>Name:</strong> {o.user?.name || "N/A"}</p>
+                    <p><strong>Email:</strong> {o.user?.email || "N/A"}</p>
                   </div>
-                  <div style={styles.orderTotal}>Order Total: ${o.total.toFixed(2)}</div>
+                  <div style={styles.orderTotal}>Order Total: Rs. {o.total.toFixed(2)}</div>
                 </div>
               </div>
             ))}
