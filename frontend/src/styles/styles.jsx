@@ -1,4 +1,3 @@
-// src/styles/styles.js
 export const styles = {
   app: {
     fontFamily: 'Arial, sans-serif',
@@ -13,17 +12,17 @@ export const styles = {
   header: {
     backgroundColor: '#000000',
     color: '#ffffff',
-    padding: '2rem 0',
+    padding: '2rem 1rem',
     borderBottom: '2px solid #333333'
   },
   headerContent: {
     maxWidth: '1200px',
     margin: '0 auto',
-    padding: '0 2rem',
+    padding: '0 1rem',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'wrap'  // ✅ makes header responsive
+    flexWrap: 'wrap'
   },
   logo: {
     fontSize: '1.5rem',
@@ -33,14 +32,16 @@ export const styles = {
   headerInfo: {
     display: 'flex',
     alignItems: 'center',
-    gap: '3rem',
-    flexWrap: 'wrap'  // ✅ makes info wrap on small screens
+    gap: '1.5rem',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
   },
   cartIcon: {
     backgroundColor: '#333333',
-    padding: '1rem 1.5rem',
+    padding: '0.8rem 1.2rem',
     borderRadius: '4px',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    fontSize: '0.9rem'
   },
 
   // Navigation Styles
@@ -56,28 +57,29 @@ export const styles = {
   navList: {
     maxWidth: '1200px',
     margin: '0 auto',
-    padding: '0 2rem',
+    padding: '0 1rem',
     display: 'flex',
     listStyle: 'none',
-    flexWrap: 'wrap',  // ✅ wrap nav items on small screens
+    flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: '1rem'
+    gap: '0.8rem'
   },
   navItem: {
-    margin: '0'
+    margin: 0
   },
   navLink: {
     display: 'block',
-    padding: '1rem 2rem',
+    padding: '0.8rem 1.5rem',
     textDecoration: 'none',
     color: '#000000',
     backgroundColor: 'transparent',
     border: '2px solid transparent',
     cursor: 'pointer',
-    fontSize: '1rem',
+    fontSize: '0.95rem',
     transition: 'all 0.3s',
     borderRadius: '6px',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textAlign: 'center'
   },
   navLinkActive: {
     backgroundColor: '#000000',
@@ -87,17 +89,17 @@ export const styles = {
 
   // Main Content Styles
   main: {
-    flex: '1',
+    flex: 1,
     maxWidth: '1200px',
     margin: '2rem auto',
-    padding: '0 2rem',
+    padding: '0 1rem',
     width: '100%'
   },
 
   // Page Title
   pageTitle: {
-    fontSize: '2.5rem',
-    marginBottom: '3rem',
+    fontSize: '2rem',
+    marginBottom: '2rem',
     textAlign: 'center',
     color: '#000000'
   },
@@ -105,9 +107,9 @@ export const styles = {
   // Hero Section
   hero: {
     textAlign: 'center',
-    padding: '5rem 2rem',
+    padding: '3rem 1rem',
     backgroundColor: '#f8f8f8',
-    margin: '3rem 0',
+    margin: '2rem 0',
     borderRadius: '8px'
   },
   heroContent: {
@@ -115,21 +117,21 @@ export const styles = {
     margin: '0 auto'
   },
   heroTitle: {
-    fontSize: '3rem',
-    marginBottom: '1.5rem'
+    fontSize: '2.2rem',
+    marginBottom: '1rem'
   },
   heroSubtitle: {
-    fontSize: '1.2rem',
-    marginBottom: '2.5rem',
+    fontSize: '1rem',
+    marginBottom: '2rem',
     color: '#666666'
   },
   heroButton: {
     backgroundColor: '#000000',
     color: '#ffffff',
-    padding: '1.2rem 2.5rem',
+    padding: '1rem 2rem',
     border: 'none',
     borderRadius: '4px',
-    fontSize: '1.1rem',
+    fontSize: '1rem',
     cursor: 'pointer',
     transition: 'background-color 0.3s'
   },
@@ -137,17 +139,17 @@ export const styles = {
   // Features
   featuresGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '2.5rem',
-    marginTop: '2.5rem'
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '1.5rem',
+    marginTop: '2rem'
   },
 
   // Products
   productsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '2.5rem',
-    marginTop: '2.5rem'
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '1.5rem',
+    marginTop: '2rem'
   },
 
   // Footer
@@ -159,14 +161,14 @@ export const styles = {
   footerContent: {
     maxWidth: '1200px',
     margin: '0 auto',
-    padding: '4rem 2rem 2rem',
+    padding: '3rem 1rem 1rem',
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '2.5rem'
+    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+    gap: '2rem'
   },
   footerBottom: {
     borderTop: '1px solid #333333',
-    padding: '2rem',
+    padding: '1.5rem',
     textAlign: 'center',
     maxWidth: '1200px',
     margin: '0 auto'

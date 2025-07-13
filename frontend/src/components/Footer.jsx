@@ -1,104 +1,131 @@
 import React from 'react';
 
 const Footer = () => {
-  const styles = {
-    footer: {
-      backgroundColor: '#000000',
-      color: '#ffffff',
-      marginTop: 'auto',
-      width: '100%',
-    },
-    footerContent: {
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '3rem 1rem 2rem',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-      gap: '2rem',
-    },
-    footerSection: {
-      marginBottom: '1rem',
-    },
-    footerSectionTitle: {
-      fontSize: '1.2rem',
-      fontWeight: 'bold',
-      marginBottom: '1rem',
-      color: '#ffffff',
-    },
-    footerText: {
-      color: '#cccccc',
-      lineHeight: '1.6',
-      marginBottom: '1rem',
-    },
-    footerLinks: {
-      listStyle: 'none',
-      padding: '0',
-      margin: '0',
-    },
-    footerLinkItem: {
-      marginBottom: '0.5rem',
-    },
-    footerLink: {
-      color: '#cccccc',
-      textDecoration: 'none',
-      display: 'block',
-      padding: '0.25rem 0',
-      transition: 'color 0.3s ease',
-      cursor: 'pointer',
-    },
-    footerLinkHover: {
-      color: '#ffffff',
-    },
-    footerBottom: {
-      borderTop: '1px solid #333333',
-      padding: '1.5rem 1rem',
-      textAlign: 'center',
-      maxWidth: '1200px',
-      margin: '0 auto',
-    },
-    footerBottomText: {
-      color: '#888888',
-      fontSize: '0.9rem',
-      margin: '0',
-    },
-  };
-
   return (
-    <footer style={styles.footer}>
-      <div style={styles.footerContent}>
-        <div style={styles.footerSection}>
-          <h3 style={styles.footerSectionTitle}>ShopEasy</h3>
-          <p style={styles.footerText}>Your trusted online shopping destination</p>
+    <footer className="custom-footer">
+      <div className="footer-sections">
+        <div className="footer-block">
+          <h4>About ShopEasy</h4>
+          <p>ShopEasy is your one-stop online marketplace, offering a wide range of quality products at amazing prices.</p>
         </div>
 
-        <div style={styles.footerSection}>
-          <h4 style={styles.footerSectionTitle}>Quick Links</h4>
-          <ul style={styles.footerLinks}>
-            <li style={styles.footerLinkItem}>
-              <a href="#" style={styles.footerLink}>Privacy Policy</a>
-            </li>
-            <li style={styles.footerLinkItem}>
-              <a href="#" style={styles.footerLink}>Terms of Service</a>
-            </li>
-            <li style={styles.footerLinkItem}>
-              <a href="#" style={styles.footerLink}>Shipping Info</a>
-            </li>
-            <li style={styles.footerLinkItem}>
-              <a href="#" style={styles.footerLink}>Returns</a>
-            </li>
+        <div className="footer-block">
+          <h4>Customer Care</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">How to Buy</a></li>
+            <li><a href="#">Returns & Refunds</a></li>
+            <li><a href="#">Contact Us</a></li>
           </ul>
         </div>
 
-        <div style={styles.footerSection}>
-          <h4 style={styles.footerSectionTitle}>Customer Service</h4>
-          <p style={styles.footerText}>Email: support@shopeasy.com</p>
-          <p style={styles.footerText}>Phone: 1-800-SHOP-EASY</p>
+        <div className="footer-block">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </div>
+
+        <div className="footer-block">
+          <h4>Connect With Us</h4>
+          <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">YouTube</a></li>
+          </ul>
         </div>
       </div>
 
-      <div style={styles.footerBottom}>
-        <p style={styles.footerBottomText}>&copy; 2025 ShopEasy. All rights reserved.</p>
+      <div className="footer-bottom">
+        <p>© 2025 ShopEasy - All Rights Reserved</p>
+        <p>Powered by ShopEasy Tech</p>
       </div>
+
+      <style>{`
+        .custom-footer {
+          background: #fff;
+          color: #333;
+          font-family: 'Poppins', sans-serif;
+          padding: 2rem 1rem;
+          text-align: center;
+        }
+
+        .footer-sections {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .footer-block {
+          max-width: 300px;
+        }
+
+        .footer-block h4 {
+          font-size: 1.1rem;
+          margin-bottom: 0.5rem;
+          color: #111;
+        }
+
+        .footer-block p {
+          font-size: 0.95rem;
+          color: #555;
+        }
+
+        .footer-block ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .footer-block li {
+          margin: 0.3rem 0;
+        }
+
+        .footer-block a {
+          color: #555;
+          text-decoration: none;
+          font-size: 0.95rem;
+        }
+
+        .footer-block a:hover {
+          color: #007bff;
+        }
+
+        .footer-bottom {
+          border-top: 1px solid #ddd;
+          padding-top: 1rem;
+          font-size: 0.85rem;
+          color: #777;
+        }
+
+        @media (min-width: 768px) {
+          .footer-sections {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            text-align: left;
+            flex-wrap: wrap;
+          }
+
+          .footer-block {
+            max-width: none;
+            width: 220px;
+          }
+
+          .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+          }
+        }
+      `}</style>
     </footer>
   );
 };

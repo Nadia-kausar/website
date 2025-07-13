@@ -1,33 +1,49 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
-// ✅ Import routes
+// Load environment variables
+dotenv.config();
+
+// Import routes
 import userRoute from './routes/userroute.js';
 import orderRoute from './routes/order.routes.js';
 import adminRoute from './routes/admin.route.js';
 import productRoute from './routes/productroute.js';
+import reviewRoute from './routes/review.routes.js';
 
 const app = express();
+const PORT = process.env.PORT || 4001;
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// ✅ Connect to MongoDB Atlas
-mongoose.connect('mongodb+srv://admin:admin123@cluster0.l87bu23.mongodb.net/BookStore', {
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 })
 .then(() => console.log('✅ Connected to MongoDB Atlas'))
-.catch((err) => console.error('❌ MongoDB Atlas connection error:', err.message));
+.catch(err => {
+  console.error('❌ MongoDB connection error:', err.message);
+  process.exit(1);
+});
 
-// ✅ Routes
+// API Routes
 app.use('/user', userRoute);
 app.use('/order', orderRoute);
 app.use('/admin', adminRoute);
 app.use('/product', productRoute);
+app.use('/review', reviewRoute);
 
-// ✅ Start server
-const PORT = process.env.PORT || 4001;
+// Root route
+app.get('/', (req, res) => {
+  res.send('📘 BookStore API is running');
+});
+
+// Start the server
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
