@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const backendURL = 'https://website-backend-project.vercel.app';
+
 const ReviewPage = () => {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState({ rating: 0, message: '' });
@@ -13,8 +15,8 @@ const ReviewPage = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/review`);
-      setReviews(res.data.reverse()); // latest first
+      const res = await axios.get(`${backendURL}/review`);
+      setReviews(res.data.reverse());
     } catch (err) {
       toast.error('Failed to load reviews');
     }
@@ -28,7 +30,7 @@ const ReviewPage = () => {
 
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/review`, newReview);
+      await axios.post(`${backendURL}/review`, newReview);
       toast.success('Review submitted!');
       setNewReview({ rating: 0, message: '' });
       fetchReviews();
@@ -71,7 +73,9 @@ const ReviewPage = () => {
         <label style={styles.label}>Rating</label>
         <select
           value={newReview.rating}
-          onChange={(e) => setNewReview({ ...newReview, rating: +e.target.value })}
+          onChange={(e) =>
+            setNewReview({ ...newReview, rating: +e.target.value })
+          }
           style={styles.select}
           disabled={loading}
         >
@@ -86,7 +90,9 @@ const ReviewPage = () => {
         <label style={styles.label}>Comment</label>
         <textarea
           value={newReview.message}
-          onChange={(e) => setNewReview({ ...newReview, message: e.target.value })}
+          onChange={(e) =>
+            setNewReview({ ...newReview, message: e.target.value })
+          }
           placeholder="Share your thoughts..."
           style={styles.textarea}
           disabled={loading}
@@ -107,6 +113,102 @@ const renderStars = (count) => (
   </span>
 );
 
-// styles unchanged from your original
+const styles = {
+  container: {
+    padding: '40px 24px',
+    fontFamily: "'Poppins', sans-serif",
+    background: '#f7fafc',
+    maxWidth: 700,
+    margin: '0 auto',
+    color: '#2d3748',
+  },
+  title: {
+    fontSize: '28px',
+    fontWeight: 700,
+    marginBottom: '24px',
+  },
+  reviewList: {
+    marginBottom: '40px',
+  },
+  card: {
+    background: '#fff',
+    padding: '20px',
+    borderRadius: '12px',
+    marginBottom: '16px',
+    border: '1px solid #e2e8f0',
+    boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+  },
+  cardTop: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '10px',
+  },
+  left: {
+    display: 'flex',
+    flexDirection: 'column',
+    fontSize: '14px',
+  },
+  date: {
+    color: '#718096',
+    fontSize: '13px',
+  },
+  stars: {
+    fontSize: '16px',
+  },
+  message: {
+    marginTop: '8px',
+    fontSize: '15px',
+  },
+  noReview: {
+    color: '#718096',
+    fontSize: '15px',
+  },
+  form: {
+    background: '#ffffff',
+    padding: '24px',
+    borderRadius: '12px',
+    border: '1px solid #e2e8f0',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
+  },
+  formTitle: {
+    fontSize: '20px',
+    fontWeight: 600,
+    marginBottom: '20px',
+  },
+  label: {
+    display: 'block',
+    marginBottom: '8px',
+    fontWeight: 500,
+    fontSize: '14px',
+  },
+  select: {
+    width: '100%',
+    padding: '10px',
+    borderRadius: '8px',
+    border: '1px solid #cbd5e0',
+    marginBottom: '20px',
+    fontSize: '15px',
+  },
+  textarea: {
+    width: '100%',
+    padding: '10px',
+    borderRadius: '8px',
+    border: '1px solid #cbd5e0',
+    height: '100px',
+    marginBottom: '20px',
+    fontSize: '15px',
+    resize: 'vertical',
+  },
+  submitBtn: {
+    padding: '12px 24px',
+    background: '#2d3748',
+    color: '#fff',
+    fontWeight: 600,
+    borderRadius: '8px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
+};
 
 export default ReviewPage;
