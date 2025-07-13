@@ -38,9 +38,6 @@ const styles = {
     transition: "background-color 0.3s ease",
     flex: "0 0 auto",
   },
-  backButtonHover: {
-    background: "#2d3748",
-  },
   orderGroup: {
     marginBottom: 40,
   },
@@ -60,9 +57,6 @@ const styles = {
     marginBottom: 24,
     boxShadow: "0 8px 16px rgba(0,0,0,0.05)",
     transition: "box-shadow 0.3s ease",
-  },
-  orderCardHover: {
-    boxShadow: "0 12px 24px rgba(0,0,0,0.1)",
   },
   orderHeader: {
     display: "flex",
@@ -149,9 +143,6 @@ const styles = {
     fontSize: 16,
     transition: "background-color 0.3s ease",
   },
-  primaryButtonHover: {
-    background: "#2d3748",
-  },
   loadingText: {
     paddingTop: 40,
     fontSize: 18,
@@ -184,7 +175,9 @@ const MyOrderPage = ({ setCurrentPage }) => {
     const fetchOrders = async () => {
       try {
         if (!user?.email) throw new Error("No user logged in");
-        const res = await axios.get(`http://localhost:4001/order/user/${user.email}`);
+        const res = await axios.get(
+          `https://website-backend-project.vercel.app/order/user/${user.email}`
+        );
         setOrders(res.data);
       } catch (err) {
         console.error(err);
@@ -255,7 +248,9 @@ const MyOrderPage = ({ setCurrentPage }) => {
                 <div style={styles.orderHeader}>
                   <div>
                     <strong>Order ID:</strong>{" "}
-                    <span style={{ color: "#319795", fontFamily: "'Courier New', Courier, monospace" }}>{o._id}</span>
+                    <span style={{ color: "#319795", fontFamily: "'Courier New', Courier, monospace" }}>
+                      {o._id}
+                    </span>
                   </div>
                   <div style={{ ...styles.orderStatus, ...getStatusColor(o.status) }}>{o.status}</div>
                 </div>
@@ -275,12 +270,8 @@ const MyOrderPage = ({ setCurrentPage }) => {
                 <div style={styles.orderSummary}>
                   <div style={styles.orderCustomer}>
                     <h4 style={{ marginBottom: 8, fontWeight: 600 }}>Customer</h4>
-                    <p>
-                      <strong>Name:</strong> {o.user.name}
-                    </p>
-                    <p>
-                      <strong>Email:</strong> {o.user.email}
-                    </p>
+                    <p><strong>Name:</strong> {o.user.name}</p>
+                    <p><strong>Email:</strong> {o.user.email}</p>
                   </div>
                   <div style={styles.orderTotal}>Order Total: ${o.total.toFixed(2)}</div>
                 </div>
