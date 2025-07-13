@@ -20,10 +20,10 @@ const LoginPage = ({ setCurrentPage }) => {
     }
 
     try {
-      const res = await axios.post('http://localhost:4001/user/login', {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/user/login`,
+        { email, password }
+      );
 
       if (res.data && res.data.user) {
         localStorage.setItem('Users', JSON.stringify(res.data.user));
@@ -84,9 +84,6 @@ const LoginPage = ({ setCurrentPage }) => {
       fontWeight: 'bold',
       cursor: 'pointer',
       transition: '0.3s ease',
-    },
-    buttonHover: {
-      backgroundColor: '#ddd',
     },
     switchText: {
       marginTop: '16px',

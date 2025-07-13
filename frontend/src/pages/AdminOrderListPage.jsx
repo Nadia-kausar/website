@@ -56,7 +56,7 @@ const AdminOrderListPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4001/order/all")
+      .get(`${import.meta.env.VITE_API_URL}/order/all`)
       .then((res) => setOrders(res.data))
       .catch((err) => console.error("Error loading orders:", err));
   }, []);

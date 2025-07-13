@@ -17,7 +17,7 @@ const ProductsPage = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('http://localhost:4001/product');
+      const res = await axios.get('https://website-backend-project.vercel.app/product');
       setProducts(res.data);
     } catch (err) {
       toast.error('❌ Failed to load products');

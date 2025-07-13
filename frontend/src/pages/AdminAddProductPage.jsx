@@ -13,7 +13,8 @@ const AdminAddProductPage = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get('http://localhost:4001/product');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/product`);
+
       setProducts(res.data);
     } catch (err) {
       alert('❌ Failed to load products');

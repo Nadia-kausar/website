@@ -46,7 +46,7 @@ const SignupPage = ({ setCurrentPage }) => {
     }
 
     try {
-      const res = await axios.post('http://localhost:4001/user/signup', {
+      const res = await axios.post('https://website-backend-project.vercel.app/user/signup', {
         fullname,
         email,
         password
