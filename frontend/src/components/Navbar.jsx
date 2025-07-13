@@ -19,49 +19,92 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
   return (
     <header style={styles.header}>
       <div style={styles.container}>
-        <div style={styles.logo} onClick={() => { setCurrentPage('home'); setMenuOpen(false); }}>
+        {/* Logo */}
+        <div
+          style={styles.logo}
+          onClick={() => {
+            setCurrentPage('home');
+            setMenuOpen(false);
+          }}
+        >
           ShopEasy
         </div>
 
-        {isMobile ? (
+        {/* Hamburger for Mobile */}
+        {isMobile && (
           <div onClick={() => setMenuOpen(!menuOpen)} style={styles.hamburger}>
             <div style={styles.line} />
             <div style={styles.line} />
             <div style={styles.line} />
           </div>
-        ) : null}
+        )}
 
-        <nav style={{
-          ...styles.nav,
-          ...(isMobile
-            ? { display: menuOpen ? 'flex' : 'none', flexDirection: 'column', width: '100%', marginTop: '1rem' }
-            : { flexDirection: 'row', display: 'flex', marginTop: 0 })
-        }}>
-          {navItems.map(page => (
+        {/* Navigation */}
+        <nav
+          style={{
+            ...styles.nav,
+            ...(isMobile
+              ? {
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                  marginTop: '1rem',
+                  maxHeight: menuOpen ? '500px' : '0',
+                  overflow: 'hidden',
+                  transition: 'max-height 0.3s ease-in-out',
+                }
+              : {
+                  flexDirection: 'row',
+                  display: 'flex',
+                  marginTop: 0,
+                  gap: '0.75rem',
+                }),
+          }}
+        >
+          {navItems.map((page) => (
             <button
               key={page}
-              onClick={() => { setCurrentPage(page); setMenuOpen(false); }}
+              onClick={() => {
+                setCurrentPage(page);
+                setMenuOpen(false);
+              }}
               style={{
                 ...styles.link,
-                ...(currentPage === page ? styles.activeLink : {})
+                ...(currentPage === page ? styles.activeLink : {}),
+                ...(isMobile ? styles.mobileLink : {}),
               }}
             >
-              {page === 'cart' ? `Cart (${cartCount})` : page.charAt(0).toUpperCase() + page.slice(1)}
+              {page === 'cart'
+                ? `Cart (${cartCount})`
+                : page.charAt(0).toUpperCase() + page.slice(1)}
             </button>
           ))}
 
           {isAuthenticated && (
             <button
-              onClick={() => { setCurrentPage('adminDashboard'); setMenuOpen(false); }}
-              style={styles.link}
+              onClick={() => {
+                setCurrentPage('adminDashboard');
+                setMenuOpen(false);
+              }}
+              style={{
+                ...styles.link,
+                ...(isMobile ? styles.mobileLink : {}),
+              }}
             >
               Dashboard
             </button>
           )}
 
           <button
-            onClick={() => { logout(); setCurrentPage('login'); setMenuOpen(false); }}
-            style={styles.link}
+            onClick={() => {
+              logout();
+              setCurrentPage('login');
+              setMenuOpen(false);
+            }}
+            style={{
+              ...styles.link,
+              ...(isMobile ? styles.mobileLink : {}),
+            }}
           >
             {isAuthenticated ? 'Logout' : 'Login'}
           </button>
@@ -73,7 +116,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
 
 const styles = {
   header: {
-    backgroundColor: '#000',
+    backgroundColor: '#f57224', // Daraz-style orange
     color: '#fff',
     padding: '1rem',
     position: 'sticky',
@@ -94,6 +137,8 @@ const styles = {
     cursor: 'pointer',
   },
   nav: {
+    display: 'flex',
+    alignItems: 'center',
     gap: '0.75rem',
   },
   link: {
@@ -110,13 +155,20 @@ const styles = {
   },
   activeLink: {
     backgroundColor: '#fff',
-    color: '#000',
+    color: '#f57224',
+  },
+  mobileLink: {
+    width: '100%',
+    textAlign: 'left',
   },
   hamburger: {
     display: 'flex',
     flexDirection: 'column',
     gap: '4px',
     cursor: 'pointer',
+    padding: '0.5rem',
+    borderRadius: '6px',
+    backgroundColor: '#f57224',
   },
   line: {
     width: '25px',

@@ -4,32 +4,32 @@ const AboutPage = () => {
   const styles = {
     page: {
       fontFamily: "'Poppins', sans-serif",
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#f9f9f9',
       color: '#333',
-      padding: '40px 16px',
-      lineHeight: '1.8',
+      padding: '30px 16px',
+      lineHeight: '1.7',
     },
     pageTitle: {
-      fontSize: '2.2rem',
+      fontSize: '2rem',
       textAlign: 'center',
-      marginBottom: '40px',
+      marginBottom: '32px',
       fontWeight: '700',
       color: '#111',
     },
     aboutSection: {
-      maxWidth: '1100px',
-      margin: '0 auto 40px auto',
+      maxWidth: '1150px',
+      margin: '0 auto 32px',
       backgroundColor: '#fff',
       padding: '24px',
       borderRadius: '12px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+      boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
     },
     sectionTitle: {
-      fontSize: '1.6rem',
+      fontSize: '1.5rem',
       fontWeight: '700',
-      marginBottom: '20px',
-      borderBottom: '2px solid #ddd',
-      paddingBottom: '10px',
+      marginBottom: '16px',
+      borderBottom: '2px solid #eee',
+      paddingBottom: '8px',
       color: '#222',
     },
     paragraph: {
@@ -39,23 +39,24 @@ const AboutPage = () => {
     },
     featuresGrid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-      gap: '20px',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+      gap: '16px',
       marginTop: '20px',
     },
     featureCard: {
-      backgroundColor: '#fdfdfd',
-      padding: '20px',
+      backgroundColor: '#fafafa',
+      padding: '18px',
       borderRadius: '10px',
-      boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
-      borderLeft: '4px solid #4a4a4a',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+      borderLeft: '4px solid #f57224',
+      fontSize: '0.95rem',
     },
     teamMember: {
       textAlign: 'center',
       padding: '20px',
-      backgroundColor: '#fdfdfd',
+      backgroundColor: '#fff',
       borderRadius: '10px',
-      boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
     },
     teamImage: {
       width: '100px',
@@ -63,10 +64,10 @@ const AboutPage = () => {
       borderRadius: '50%',
       objectFit: 'cover',
       marginBottom: '1rem',
-      border: '2px solid #ccc',
+      border: '2px solid #f0f0f0',
     },
     teamName: {
-      fontSize: '1.1rem',
+      fontSize: '1.05rem',
       fontWeight: '600',
       marginBottom: '0.3rem',
       color: '#222',
@@ -107,7 +108,7 @@ const AboutPage = () => {
         </p>
       </section>
 
-      {/* Values */}
+      {/* Core Values */}
       <section style={styles.aboutSection}>
         <h2 style={styles.sectionTitle}>Core Values</h2>
         <div style={styles.featuresGrid}>
@@ -130,7 +131,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Team */}
+      {/* Team Section */}
       <section style={styles.aboutSection}>
         <h2 style={styles.sectionTitle}>Meet the Team</h2>
         <p style={styles.paragraph}>

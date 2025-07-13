@@ -1,16 +1,65 @@
 import React from 'react';
 
+const featuredProducts = [
+  {
+    id: 1,
+    title: 'Leather Wallet',
+    price: '$49.99',
+    img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    id: 2,
+    title: 'Sunglasses',
+    price: '$79.99',
+    img: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    id: 3,
+    title: 'Backpack',
+    price: '$89.99',
+    img: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80',
+  },
+  {
+    id: 4,
+    title: 'Smart Watch',
+    price: '$199.99',
+    img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
+  },
+];
+
+const shortImages = [
+  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=150&q=80',
+  'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=150&q=80',
+  'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=150&q=80',
+  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=150&q=80',
+];
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const HomePageBW = () => {
-  const [width, setWidth] = React.useState(window.innerWidth);
+  const [width, setWidth] = React.useState(0);
   const [hoverIndex, setHoverIndex] = React.useState(null);
   const [shortHoverIndex, setShortHoverIndex] = React.useState(null);
   const [email, setEmail] = React.useState('');
   const [subscribed, setSubscribed] = React.useState(false);
 
   React.useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
+    // Set initial width safely
+    setWidth(window.innerWidth);
+
+    let timeoutId = null;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWidth(window.innerWidth);
+      }, 150);
+    };
+
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const isMobile = width <= 768;
@@ -83,7 +132,7 @@ const HomePageBW = () => {
       boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
       padding: '16px',
       textAlign: 'center',
-      transition: '0.3s',
+      transition: 'transform 0.3s, box-shadow 0.3s',
       cursor: 'pointer',
     },
     productCardHover: {
@@ -150,6 +199,10 @@ const HomePageBW = () => {
       borderRadius: '6px',
       fontSize: '1rem',
       cursor: 'pointer',
+      transition: 'background-color 0.3s',
+    },
+    subscribeButtonHover: {
+      backgroundColor: '#d05a1a',
     },
     successMessage: {
       marginTop: '12px',
@@ -159,49 +212,18 @@ const HomePageBW = () => {
     },
   };
 
-  const featuredProducts = [
-    {
-      id: 1,
-      title: 'Leather Wallet',
-      price: '$49.99',
-      img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80',
-    },
-    {
-      id: 2,
-      title: 'Sunglasses',
-      price: '$79.99',
-      img: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-    },
-    {
-      id: 3,
-      title: 'Backpack',
-      price: '$89.99',
-      img: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80',
-    },
-    {
-      id: 4,
-      title: 'Smart Watch',
-      price: '$199.99',
-      img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-    },
-  ];
-
-  const shortImages = [
-    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=150&q=80',
-    'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=150&q=80',
-    'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=150&q=80',
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=150&q=80',
-  ];
-
   const handleSubscribe = (e) => {
     e.preventDefault();
-    if (!email.trim() || !email.includes("@")) return;
+    if (!email.trim() || !emailRegex.test(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
     setSubscribed(true);
     setEmail('');
   };
 
   return (
-    <div style={styles.page}>
+    <>
       {/* Hero Section */}
       <section style={styles.hero}>
         <img
@@ -228,12 +250,16 @@ const HomePageBW = () => {
                 ...styles.productCard,
                 ...(hoverIndex === idx ? styles.productCardHover : {}),
               }}
+              role="button"
+              tabIndex={0}
+              aria-label={`View details for ${product.title}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  alert(`Clicked on ${product.title}`); // Example interaction
+                }
+              }}
             >
-              <img
-                src={product.img}
-                alt={product.title}
-                style={styles.productImage}
-              />
+              <img src={product.img} alt={product.title} style={styles.productImage} />
               <h3 style={styles.productTitle}>{product.title}</h3>
               <p style={styles.productPrice}>{product.price}</p>
             </div>
@@ -249,7 +275,7 @@ const HomePageBW = () => {
             <img
               key={idx}
               src={img}
-              alt="Explore"
+              alt={`Explore item ${idx + 1}`}
               onMouseEnter={() => setShortHoverIndex(idx)}
               onMouseLeave={() => setShortHoverIndex(null)}
               style={{
@@ -271,38 +297,36 @@ const HomePageBW = () => {
             <strong>- Sarah J.</strong>
           </article>
           <article style={styles.productCard}>
-            <p>"Always find what I need — love it!"</p>
-            <strong>- Mike T.</strong>
+            <p>"Great prices and customer service."</p>
+            <strong>- Michael B.</strong>
           </article>
           <article style={styles.productCard}>
-            <p>"Excellent support and service."</p>
-            <strong>- Emily R.</strong>
+            <p>"Highly recommend ShopEasy to everyone."</p>
+            <strong>- Priya K.</strong>
           </article>
         </div>
       </section>
 
-      {/* Newsletter */}
+      {/* Newsletter Subscription */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Stay Updated</h2>
-        <p style={{ textAlign: 'center' }}>Subscribe for deals, updates & more.</p>
-        <form onSubmit={handleSubscribe} style={styles.newsletterForm} noValidate>
+        <h2 style={styles.sectionTitle}>Subscribe to Our Newsletter</h2>
+        <form style={styles.newsletterForm} onSubmit={handleSubscribe} noValidate>
           <input
             type="email"
             placeholder="Enter your email"
-            style={styles.emailInput}
+            aria-label="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={styles.emailInput}
             required
           />
           <button type="submit" style={styles.subscribeButton}>
             Subscribe
           </button>
         </form>
-        {subscribed && (
-          <p style={styles.successMessage}>Thank you for subscribing!</p>
-        )}
+        {subscribed && <p style={styles.successMessage}>Thank you for subscribing!</p>}
       </section>
-    </div>
+    </>
   );
 };
 

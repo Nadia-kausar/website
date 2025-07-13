@@ -13,14 +13,13 @@ const LoginPage = ({ setCurrentPage }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     if (!email.trim() || !password.trim()) {
-      toast.error('Please fill in all fields');
-      setLoading(false);
+      toast.error('Please fill in both email and password');
       return;
     }
 
+    setLoading(true);
     try {
       const res = await axios.post(`${backendURL}/user/login`, {
         email: email.trim(),
@@ -33,12 +32,11 @@ const LoginPage = ({ setCurrentPage }) => {
         toast.success('✅ Login successful');
         setCurrentPage('home');
       } else {
-        toast.error('❌ Invalid credentials');
+        toast.error('❌ Invalid email or password');
       }
     } catch (err) {
       toast.error(err.response?.data?.message || '❌ Login failed');
     }
-
     setLoading(false);
   };
 
@@ -87,7 +85,7 @@ const LoginPage = ({ setCurrentPage }) => {
       borderRadius: '8px',
       fontWeight: 'bold',
       cursor: loading ? 'not-allowed' : 'pointer',
-      transition: '0.3s ease',
+      transition: 'background-color 0.3s ease',
     },
     switchText: {
       marginTop: '16px',
@@ -104,27 +102,37 @@ const LoginPage = ({ setCurrentPage }) => {
 
   return (
     <div style={styles.wrapper}>
-      <form onSubmit={handleLogin} style={styles.form}>
+      <form onSubmit={handleLogin} style={styles.form} noValidate>
         <h2 style={styles.heading}>Login to Your Account</h2>
+
+        <label htmlFor="email" style={{ display: 'none' }}>Email</label>
         <input
+          id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           style={styles.input}
           required
+          aria-label="Email"
         />
+
+        <label htmlFor="password" style={{ display: 'none' }}>Password</label>
         <input
+          id="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           style={styles.input}
           required
+          aria-label="Password"
         />
+
         <button type="submit" disabled={loading} style={styles.button}>
           {loading ? 'Logging in...' : 'Login'}
         </button>
+
         <p style={styles.switchText}>
           Don&apos;t have an account?{' '}
           <span onClick={() => setCurrentPage('signup')} style={styles.switchLink}>

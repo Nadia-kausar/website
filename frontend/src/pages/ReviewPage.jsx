@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -8,6 +8,7 @@ const ReviewPage = ({ productId, userId }) => {
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState({ rating: 0, message: '' });
   const [loading, setLoading] = useState(false);
+  const reviewListRef = useRef(null);
 
   useEffect(() => {
     fetchReviews();
@@ -18,14 +19,14 @@ const ReviewPage = ({ productId, userId }) => {
       const res = await axios.get(`${backendURL}/review/${productId}`);
       setReviews(res.data.reverse());
     } catch (err) {
-      toast.error('Failed to load reviews');
+      toast.error('❌ Failed to load reviews');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newReview.rating || !newReview.message.trim()) {
-      return toast.error('Please add both rating and message');
+      return toast.error('Please provide both rating and message');
     }
 
     setLoading(true);
@@ -35,9 +36,12 @@ const ReviewPage = ({ productId, userId }) => {
         productId,
         userId,
       });
-      toast.success('Review submitted!');
+      toast.success('✅ Review submitted!');
       setNewReview({ rating: 0, message: '' });
       fetchReviews();
+      setTimeout(() => {
+        reviewListRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Submit failed');
     }
@@ -46,12 +50,12 @@ const ReviewPage = ({ productId, userId }) => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>Customer Reviews</h2>
+      <h2 style={styles.title}>🗨️ Customer Reviews</h2>
 
       {/* Review List */}
-      <div style={styles.reviewList}>
+      <div style={styles.reviewList} ref={reviewListRef}>
         {reviews.length === 0 ? (
-          <p style={styles.noReview}>No reviews yet.</p>
+          <p style={styles.noReview}>No reviews yet. Be the first to share your thoughts!</p>
         ) : (
           reviews.map((r, idx) => (
             <div key={idx} style={styles.card}>
@@ -62,7 +66,9 @@ const ReviewPage = ({ productId, userId }) => {
                     {new Date(r.createdAt).toLocaleDateString()}
                   </span>
                 </div>
-                <div style={styles.stars}>{renderStars(r.rating)}</div>
+                <div style={styles.stars} aria-label={`Rating: ${r.rating} stars`}>
+                  {renderStars(r.rating)}
+                </div>
               </div>
               <p style={styles.message}>{r.message}</p>
             </div>
@@ -71,8 +77,8 @@ const ReviewPage = ({ productId, userId }) => {
       </div>
 
       {/* Review Form */}
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <h3 style={styles.formTitle}>Write a Review</h3>
+      <form onSubmit={handleSubmit} style={styles.form} noValidate>
+        <h3 style={styles.formTitle}>📝 Write a Review</h3>
 
         <label style={styles.label}>Rating</label>
         <select
@@ -97,7 +103,7 @@ const ReviewPage = ({ productId, userId }) => {
           onChange={(e) =>
             setNewReview({ ...newReview, message: e.target.value })
           }
-          placeholder="Share your thoughts..."
+          placeholder="Share your experience..."
           style={styles.textarea}
           disabled={loading}
         ></textarea>
@@ -130,6 +136,7 @@ const styles = {
     fontSize: '28px',
     fontWeight: 700,
     marginBottom: '24px',
+    textAlign: 'center',
   },
   reviewList: {
     marginBottom: '40px',
@@ -166,6 +173,7 @@ const styles = {
   noReview: {
     color: '#718096',
     fontSize: '15px',
+    textAlign: 'center',
   },
   form: {
     background: '#ffffff',
@@ -212,6 +220,7 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     fontSize: '16px',
+    transition: '0.3s',
   },
 };
 

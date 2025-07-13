@@ -18,7 +18,7 @@ const AdminAddProductPage = () => {
     try {
       const res = await axios.get(`${backendURL}/product`);
       setProducts(res.data);
-    } catch (err) {
+    } catch {
       toast.error('❌ Failed to load products');
     } finally {
       setLoading(false);
@@ -35,6 +35,7 @@ const AdminAddProductPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!product.title.trim() || !product.author.trim()) {
       toast.error('Title and Author are required!');
       return;
@@ -49,30 +50,30 @@ const AdminAddProductPage = () => {
       toast.success('✅ Product added successfully');
       setProduct({ title: '', author: '', price: '', description: '' });
       fetchProducts();
-    } catch (error) {
+    } catch {
       toast.error('❌ Failed to add product');
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this product?')) return;
+    if (!window.confirm('Are you sure you want to delete this product?')) return;
     try {
       await axios.delete(`${backendURL}/admin/delete-product/${id}`);
       toast.success('🗑️ Product deleted');
       fetchProducts();
-    } catch (error) {
+    } catch {
       toast.error('❌ Failed to delete product');
     }
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>➕ Add New Product</h2>
+    <div style={styles.page}>
+      <h2 style={styles.heading}>📋 Add New Product</h2>
 
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           name="title"
-          placeholder="Title"
+          placeholder="Product Title"
           value={product.title}
           onChange={handleChange}
           required
@@ -80,7 +81,7 @@ const AdminAddProductPage = () => {
         />
         <input
           name="author"
-          placeholder="Author"
+          placeholder="Author / Brand"
           value={product.author}
           onChange={handleChange}
           required
@@ -88,7 +89,7 @@ const AdminAddProductPage = () => {
         />
         <input
           name="price"
-          placeholder="Price"
+          placeholder="Price (PKR)"
           value={product.price}
           onChange={handleChange}
           required
@@ -101,136 +102,140 @@ const AdminAddProductPage = () => {
           onChange={handleChange}
           style={styles.textarea}
         ></textarea>
-        <button type="submit" style={styles.button}>
-          Add Product
-        </button>
+        <button type="submit" style={styles.button}>Add Product</button>
       </form>
 
-      <h3 style={styles.subheading}>📦 All Products</h3>
+      <h3 style={styles.subheading}>🛍️ Product List</h3>
+
       {loading ? (
-        <p style={{ color: '#aaa', marginTop: 20 }}>Loading products...</p>
+        <p style={{ textAlign: 'center', color: '#888' }}>Loading products...</p>
       ) : products.length === 0 ? (
-        <p style={{ color: '#888', marginTop: 20 }}>No products found.</p>
+        <p style={{ textAlign: 'center', color: '#999' }}>No products found.</p>
       ) : (
-        <ul style={styles.list}>
+        <div style={styles.productList}>
           {products.map((p) => (
-            <li
-              key={p._id}
-              style={styles.item}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = '#191919')
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = '#111')
-              }
-            >
-              <div style={styles.productInfo}>
-                <strong>{p.title}</strong> — {p.author} (${p.price})
+            <div key={p._id} style={styles.productCard}>
+              <div style={styles.productDetails}>
+                <div style={styles.productTitle}>{p.title}</div>
+                <div style={styles.meta}>
+                  <span style={styles.tag}>{p.author}</span>
+                  <span style={styles.price}>Rs. {p.price}</span>
+                </div>
               </div>
-              <button onClick={() => handleDelete(p._id)} style={styles.deleteBtn}>
-                🗑️
-              </button>
-            </li>
+              <button onClick={() => handleDelete(p._id)} style={styles.deleteBtn}>🗑️</button>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
 };
 
 const styles = {
-  container: {
-    padding: '32px 16px',
-    fontFamily: 'Poppins, sans-serif',
-    background: '#000',
-    color: '#f5f5f5',
+  page: {
+    backgroundColor: '#f4f4f4',
     minHeight: '100vh',
+    padding: '40px 16px',
+    fontFamily: "'Poppins', sans-serif",
   },
   heading: {
-    fontSize: '24px',
-    marginBottom: '20px',
-    fontWeight: '700',
+    fontSize: '26px',
     textAlign: 'center',
-  },
-  subheading: {
-    marginTop: '36px',
-    fontSize: '20px',
-    fontWeight: '600',
-    textAlign: 'center',
+    marginBottom: '28px',
+    fontWeight: 'bold',
+    color: '#333',
   },
   form: {
+    backgroundColor: '#fff',
+    maxWidth: '500px',
+    margin: '0 auto',
+    padding: '24px',
+    borderRadius: '12px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
     display: 'flex',
     flexDirection: 'column',
-    gap: '12px',
-    maxWidth: '100%',
-    width: '100%',
-    maxWidth: '500px',
-    background: '#111',
-    padding: '20px',
-    borderRadius: '12px',
-    border: '1px solid #333',
-    margin: '0 auto',
+    gap: '14px',
   },
   input: {
-    padding: '10px',
+    padding: '12px',
     borderRadius: '6px',
-    border: '1px solid #555',
-    backgroundColor: '#222',
-    color: '#fff',
-    width: '100%',
+    border: '1px solid #ccc',
+    fontSize: '1rem',
   },
   textarea: {
-    padding: '10px',
+    padding: '12px',
     borderRadius: '6px',
-    border: '1px solid #555',
-    backgroundColor: '#222',
-    color: '#fff',
+    border: '1px solid #ccc',
     minHeight: '80px',
-    width: '100%',
+    fontSize: '1rem',
   },
   button: {
-    background: '#00ffc8',
-    color: '#000',
-    padding: '12px',
-    fontWeight: '600',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    border: 'none',
-    width: '100%',
-  },
-  list: {
-    listStyle: 'none',
-    padding: 0,
-    marginTop: '20px',
-    maxWidth: '100%',
-    width: '100%',
-    maxWidth: '600px',
-    margin: '20px auto 0',
-  },
-  item: {
-    background: '#111',
-    padding: '14px',
-    borderRadius: '10px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    border: '1px solid #333',
-    marginBottom: '12px',
-    transition: 'background 0.2s',
-  },
-  productInfo: {
-    fontSize: '0.95rem',
-    wordBreak: 'break-word',
-  },
-  deleteBtn: {
-    background: 'red',
+    backgroundColor: '#f57224',
     color: '#fff',
-    padding: '8px 12px',
     border: 'none',
     borderRadius: '6px',
+    padding: '12px',
+    fontWeight: 'bold',
     cursor: 'pointer',
-    alignSelf: 'flex-end',
+    fontSize: '1rem',
+  },
+  subheading: {
+    fontSize: '22px',
+    margin: '40px 0 20px',
+    textAlign: 'center',
+    color: '#444',
+    fontWeight: '600',
+  },
+  productList: {
+    maxWidth: '700px',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '14px',
+  },
+  productCard: {
+    background: '#fff',
+    padding: '16px 20px',
+    borderRadius: '10px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+  },
+  productDetails: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  productTitle: {
+    fontWeight: '600',
+    fontSize: '1rem',
+    marginBottom: '6px',
+    color: '#222',
+  },
+  meta: {
+    display: 'flex',
+    gap: '10px',
     fontSize: '0.9rem',
+    color: '#777',
+  },
+  tag: {
+    backgroundColor: '#eee',
+    padding: '4px 8px',
+    borderRadius: '4px',
+    fontWeight: '500',
+  },
+  price: {
+    fontWeight: '600',
+    color: '#e53935',
+  },
+  deleteBtn: {
+    background: '#e53935',
+    color: '#fff',
+    border: 'none',
+    padding: '8px 12px',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
   },
 };
 

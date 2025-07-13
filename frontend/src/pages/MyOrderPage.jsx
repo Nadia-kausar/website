@@ -19,6 +19,7 @@ const styles = {
     alignItems: "center",
     marginBottom: 40,
     flexWrap: "wrap",
+    gap: "16px",
   },
   pageTitle: {
     fontSize: 32,
@@ -36,7 +37,6 @@ const styles = {
     fontWeight: 600,
     fontSize: 16,
     transition: "background-color 0.3s ease",
-    flex: "0 0 auto",
   },
   orderGroup: {
     marginBottom: 40,
@@ -55,7 +55,7 @@ const styles = {
     borderRadius: 12,
     padding: 24,
     marginBottom: 24,
-    boxShadow: "0 8px 16px rgba(0,0,0,0.05)",
+    boxShadow: "0 6px 12px rgba(0,0,0,0.06)",
     transition: "box-shadow 0.3s ease",
   },
   orderHeader: {
@@ -66,6 +66,8 @@ const styles = {
     fontSize: 16,
     fontWeight: 600,
     letterSpacing: 0.5,
+    flexWrap: "wrap",
+    gap: "8px",
   },
   orderStatus: {
     padding: "6px 16px",
@@ -80,22 +82,21 @@ const styles = {
   orderItem: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginBottom: 16,
     borderBottom: "1px solid #EDF2F7",
     paddingBottom: 12,
-  },
-  orderItemDetails: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "space-between",
-    gap: 12,
-    fontSize: 15,
-    color: "#2D3748",
     flexWrap: "wrap",
   },
+  orderItemDetails: {
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr 1fr 1fr",
+    gap: 8,
+    fontSize: 15,
+    color: "#2D3748",
+    width: "100%",
+  },
   orderItemName: {
-    flex: "2 1 200px",
     fontWeight: 600,
   },
   orderSummary: {
@@ -173,7 +174,9 @@ const MyOrderPage = ({ setCurrentPage }) => {
     const fetchOrders = async () => {
       try {
         if (!user?.email) throw new Error("No user logged in");
-        const res = await axios.get(`https://website-backend-project.vercel.app/order/user/${user.email}`);
+        const res = await axios.get(
+          `https://website-backend-project.vercel.app/order/user/${user.email}`
+        );
         setOrders(res.data);
       } catch (err) {
         console.error(err);
@@ -201,7 +204,7 @@ const MyOrderPage = ({ setCurrentPage }) => {
   return (
     <div style={styles.page}>
       <div style={styles.pageHeader}>
-        <h1 style={styles.pageTitle}>My Order History</h1>
+        <h1 style={styles.pageTitle}>🧾 My Order History</h1>
         <button
           style={styles.backButton}
           onClick={() => setCurrentPage("products")}
@@ -235,16 +238,26 @@ const MyOrderPage = ({ setCurrentPage }) => {
             {ordersOnDate.map((o) => (
               <div
                 key={o._id}
-                style={{ ...styles.orderCard }}
-                onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.1)")}
-                onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "0 8px 16px rgba(0,0,0,0.05)")}
+                style={styles.orderCard}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.boxShadow =
+                    "0 12px 24px rgba(0,0,0,0.1)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.boxShadow =
+                    "0 6px 12px rgba(0,0,0,0.06)")
+                }
               >
                 <div style={styles.orderHeader}>
                   <div>
                     <strong>Order ID:</strong>{" "}
-                    <span style={{ color: "#319795", fontFamily: "monospace" }}>{o._id}</span>
+                    <span style={{ color: "#319795", fontFamily: "monospace" }}>
+                      {o._id}
+                    </span>
                   </div>
-                  <div style={{ ...styles.orderStatus, ...getStatusColor(o.status) }}>{o.status}</div>
+                  <div style={{ ...styles.orderStatus, ...getStatusColor(o.status) }}>
+                    {o.status}
+                  </div>
                 </div>
 
                 <h3 style={{ marginBottom: 12, fontWeight: 600 }}>Items</h3>
@@ -262,10 +275,16 @@ const MyOrderPage = ({ setCurrentPage }) => {
                 <div style={styles.orderSummary}>
                   <div style={styles.orderCustomer}>
                     <h4 style={{ marginBottom: 8, fontWeight: 600 }}>Customer</h4>
-                    <p><strong>Name:</strong> {o.user?.name || "N/A"}</p>
-                    <p><strong>Email:</strong> {o.user?.email || "N/A"}</p>
+                    <p>
+                      <strong>Name:</strong> {o.user?.name || "N/A"}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {o.user?.email || "N/A"}
+                    </p>
                   </div>
-                  <div style={styles.orderTotal}>Order Total: Rs. {o.total.toFixed(2)}</div>
+                  <div style={styles.orderTotal}>
+                    Order Total: Rs. {o.total.toFixed(2)}
+                  </div>
                 </div>
               </div>
             ))}

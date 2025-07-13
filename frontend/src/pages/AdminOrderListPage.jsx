@@ -13,8 +13,8 @@ const styles = {
     boxSizing: "border-box",
   },
   heading: {
-    fontSize: "24px",
-    marginBottom: "20px",
+    fontSize: "28px",
+    marginBottom: "32px",
     color: "#222",
     fontWeight: "700",
     textAlign: "center",
@@ -22,8 +22,8 @@ const styles = {
   card: {
     background: "#fff",
     borderRadius: "12px",
-    padding: "16px",
-    marginBottom: "20px",
+    padding: "20px",
+    marginBottom: "24px",
     boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
     transition: "box-shadow 0.3s ease",
   },
@@ -42,27 +42,28 @@ const styles = {
   total: {
     fontWeight: "bold",
     marginTop: "14px",
-    fontSize: "15px",
+    fontSize: "16px",
     color: "#111",
   },
   status: {
-    marginTop: "10px",
+    marginTop: "14px",
     display: "inline-block",
-    padding: "6px 12px",
+    padding: "6px 14px",
     borderRadius: "20px",
     fontSize: "13px",
     fontWeight: 600,
     textTransform: "capitalize",
+    border: "1px solid transparent",
   },
   payment: {
     fontStyle: "italic",
     fontSize: "13px",
     color: "#666",
-    marginTop: "6px",
+    marginTop: "8px",
   },
   empty: {
     color: "#777",
-    fontSize: "15px",
+    fontSize: "16px",
     marginTop: "40px",
     textAlign: "center",
   },
@@ -71,16 +72,16 @@ const styles = {
 const getStatusStyle = (status) => {
   switch (status?.toLowerCase()) {
     case "shipped":
-      return { background: "#e0f3ff", color: "#007bff" };
+      return { background: "#e0f3ff", color: "#007bff", borderColor: "#90caf9" };
     case "processing":
-      return { background: "#fff8e1", color: "#f0ad4e" };
+      return { background: "#fff8e1", color: "#f0ad4e", borderColor: "#ffe082" };
     case "completed":
-      return { background: "#e0f7e9", color: "#28a745" };
+      return { background: "#e0f7e9", color: "#28a745", borderColor: "#a5d6a7" };
     case "cancelled":
-      return { background: "#fdecea", color: "#dc3545" };
+      return { background: "#fdecea", color: "#dc3545", borderColor: "#ef9a9a" };
     case "order placed":
     default:
-      return { background: "#edf2f7", color: "#4a5568" };
+      return { background: "#edf2f7", color: "#4a5568", borderColor: "#cbd5e0" };
   }
 };
 
@@ -99,7 +100,7 @@ const AdminOrderListPage = () => {
 
   return (
     <div style={styles.page}>
-      <h2 style={styles.heading}>📦 Admin Dashboard - All Orders</h2>
+      <h2 style={styles.heading}>📦 Admin Dashboard — All Orders</h2>
 
       {orders.length === 0 ? (
         <p style={styles.empty}>No orders found.</p>
@@ -127,7 +128,9 @@ const AdminOrderListPage = () => {
             </div>
 
             <div style={styles.total}>💰 Total: Rs {Number(order.total).toFixed(2)}</div>
-            <div style={styles.payment}>💳 Payment Method: {order.paymentMethod || "Not Specified"}</div>
+            <div style={styles.payment}>
+              💳 Payment Method: {order.paymentMethod || "Not Specified"}
+            </div>
             <div style={{ ...styles.status, ...getStatusStyle(order.status) }}>
               {order.status || "Order Placed"}
             </div>

@@ -14,45 +14,43 @@ const SignupPage = ({ setCurrentPage }) => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
+  const backendURL = import.meta.env.VITE_API_URL || 'https://website-backend-project.vercel.app';
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value.trimStart(),
     });
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
     const { fullname, email, password, confirmPassword } = formData;
 
     if (!fullname || !email || !password || !confirmPassword) {
       toast.error('❗ Please fill in all fields');
-      setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
       toast.error('❗ Passwords do not match');
-      setLoading(false);
       return;
     }
 
     if (password.length < 6) {
       toast.error('❗ Password must be at least 6 characters');
-      setLoading(false);
       return;
     }
 
+    setLoading(true);
     try {
-      const res = await axios.post('https://website-backend-project.vercel.app/user/signup', {
-        fullname,
-        email,
-        password
+      const res = await axios.post(`${backendURL}/user/signup`, {
+        fullname: fullname.trim(),
+        email: email.trim(),
+        password: password.trim()
       });
 
-      if (res.data && res.data.user) {
+      if (res.data?.user) {
         toast.success('✅ Signup successful! Welcome 🎉');
         localStorage.setItem('Users', JSON.stringify(res.data.user));
         login(res.data.user);
@@ -61,7 +59,6 @@ const SignupPage = ({ setCurrentPage }) => {
     } catch (err) {
       toast.error(err.response?.data?.message || '❌ Signup failed');
     }
-
     setLoading(false);
   };
 
@@ -70,47 +67,54 @@ const SignupPage = ({ setCurrentPage }) => {
       <div style={styles.card}>
         <h2 style={styles.title}>Create Your Account</h2>
 
-        <form onSubmit={handleSignup} style={styles.form}>
+        <form onSubmit={handleSignup} style={styles.form} noValidate>
           <input
             type="text"
+            id="fullname"
             name="fullname"
             placeholder="Full Name"
             value={formData.fullname}
             onChange={handleChange}
-            required
             style={styles.input}
             autoComplete="name"
-            autoFocus
+            aria-label="Full Name"
+            required
           />
           <input
             type="email"
+            id="email"
             name="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            required
             style={styles.input}
             autoComplete="email"
+            aria-label="Email"
+            required
           />
           <input
             type="password"
+            id="password"
             name="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            required
             style={styles.input}
             autoComplete="new-password"
+            aria-label="Password"
+            required
           />
           <input
             type="password"
+            id="confirmPassword"
             name="confirmPassword"
             placeholder="Confirm Password"
             value={formData.confirmPassword}
             onChange={handleChange}
-            required
             style={styles.input}
             autoComplete="new-password"
+            aria-label="Confirm Password"
+            required
           />
 
           <button
@@ -119,8 +123,8 @@ const SignupPage = ({ setCurrentPage }) => {
             style={{
               ...styles.button,
               backgroundColor: loading ? '#555' : '#fff',
-              color: loading ? '#ccc' : '#000',
-              cursor: loading ? 'not-allowed' : 'pointer'
+              color: loading ? '#aaa' : '#000',
+              cursor: loading ? 'not-allowed' : 'pointer',
             }}
             onMouseEnter={(e) => {
               if (!loading) e.currentTarget.style.backgroundColor = '#f0f0f0';

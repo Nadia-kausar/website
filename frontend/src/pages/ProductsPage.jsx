@@ -67,7 +67,6 @@ const ProductsPage = () => {
               <button
                 style={styles.cartBtn}
                 onClick={() => handleAddToCart(product)}
-                aria-label={`Add ${product.title} to cart`}
               >
                 🛒 Add to Cart
               </button>
@@ -75,7 +74,6 @@ const ProductsPage = () => {
               <button
                 style={styles.reviewBtn}
                 onClick={() => setShowReviewFor(isVisible ? null : product._id)}
-                aria-label={`Toggle reviews for ${product.title}`}
               >
                 {isVisible ? 'Hide Reviews' : 'View Reviews'}
               </button>
@@ -95,7 +93,6 @@ const ProductsPage = () => {
                   <button
                     style={styles.deleteBtn}
                     onClick={() => handleDeleteProduct(product._id)}
-                    aria-label={`Delete ${product.title}`}
                   >
                     🗑️ Delete
                   </button>
@@ -112,33 +109,33 @@ const ProductsPage = () => {
 const styles = {
   page: {
     backgroundColor: '#f4f4f4',
-    padding: '40px 30px',
+    padding: '30px 20px',
+    fontFamily: "'Segoe UI', sans-serif",
     minHeight: '100vh',
-    fontFamily: 'Segoe UI, sans-serif',
   },
   title: {
-    fontSize: '36px',
+    fontSize: '28px',
     textAlign: 'center',
-    marginBottom: '40px',
-    color: '#1a1a1a',
+    marginBottom: '30px',
+    color: '#222',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-    gap: '24px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    gap: '20px',
   },
   card: {
-    backgroundColor: '#ffffff',
-    borderRadius: '10px',
+    backgroundColor: '#fff',
     padding: '20px',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
+    borderRadius: '12px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    transition: 'transform 0.2s ease',
+    justifyContent: 'space-between',
+    transition: 'transform 0.3s',
   },
   productTitle: {
-    fontSize: '20px',
+    fontSize: '18px',
     fontWeight: 'bold',
     marginBottom: '6px',
     color: '#333',
@@ -146,66 +143,64 @@ const styles = {
   },
   author: {
     fontSize: '13px',
-    color: '#666',
-    marginBottom: '10px',
+    color: '#777',
+    textAlign: 'center',
+    marginBottom: '6px',
   },
   price: {
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: 'bold',
     color: '#e53935',
+    textAlign: 'center',
     marginBottom: '10px',
   },
   desc: {
     fontSize: '14px',
-    color: '#444',
+    color: '#555',
     textAlign: 'center',
-    minHeight: '50px',
     marginBottom: '10px',
+    minHeight: '50px',
   },
   cartBtn: {
     backgroundColor: '#f57224',
     color: '#fff',
-    padding: '10px 16px',
+    padding: '10px',
     border: 'none',
     borderRadius: '6px',
     fontWeight: 'bold',
     cursor: 'pointer',
-    marginTop: '10px',
+    fontSize: '15px',
     width: '100%',
-    transition: 'background 0.2s ease',
+    marginBottom: '10px',
   },
   reviewBtn: {
     backgroundColor: '#fff',
     color: '#f57224',
     border: '2px solid #f57224',
-    padding: '8px 14px',
+    padding: '10px',
     borderRadius: '6px',
     cursor: 'pointer',
-    marginTop: '10px',
+    fontWeight: 'bold',
+    fontSize: '15px',
     width: '100%',
-    transition: 'all 0.2s ease',
+    marginBottom: '10px',
   },
   reviewBox: {
-    marginTop: '15px',
-    width: '100%',
+    marginTop: '10px',
   },
   adminControls: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '10px',
     marginTop: '10px',
-    width: '100%',
   },
   deleteBtn: {
     backgroundColor: '#d32f2f',
     color: '#fff',
-    padding: '8px 12px',
     border: 'none',
     borderRadius: '6px',
+    padding: '10px',
+    fontWeight: 'bold',
     fontSize: '14px',
     cursor: 'pointer',
     width: '100%',
-    fontWeight: 'bold',
   },
 };
 
