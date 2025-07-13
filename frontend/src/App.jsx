@@ -15,7 +15,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignUpPage';
 import MyOrderPage from './pages/MyOrderPage';
 import AdminDashboard from './pages/AdminDashboard';
-import ReviewPage from './pages/ReviewPage';  // <-- Import ReviewPage
+import ReviewPage from './pages/ReviewPage';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState(() => {
@@ -26,15 +26,6 @@ const App = () => {
     const saved = localStorage.getItem('orders');
     return saved ? JSON.parse(saved) : [];
   });
-
-  // Current logged-in user info (null if not logged in)
-  const [currentUser, setCurrentUser] = useState(null);
-
-  // Load user info from localStorage or any other auth source
-  useEffect(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) setCurrentUser(JSON.parse(savedUser));
-  }, []);
 
   useEffect(() => {
     localStorage.setItem('orders', JSON.stringify(orders));
@@ -55,16 +46,15 @@ const App = () => {
       case 'cart':
         return <CartPage setOrders={setOrders} setCurrentPage={setCurrentPage} />;
       case 'login':
-        return <LoginPage setCurrentPage={setCurrentPage} setCurrentUser={setCurrentUser} />; 
-        // Pass setCurrentUser if login updates user state
+        return <LoginPage setCurrentPage={setCurrentPage} />;
       case 'signup':
         return <SignupPage setCurrentPage={setCurrentPage} />;
       case 'myorder':
         return <MyOrderPage orders={orders} setCurrentPage={setCurrentPage} />;
       case 'adminDashboard':
         return <AdminDashboard setCurrentPage={setCurrentPage} />;
-      case 'review':   // <-- Add ReviewPage here
-        return <ReviewPage currentUser={currentUser} setCurrentPage={setCurrentPage} />;
+      case 'review':
+        return <ReviewPage setCurrentPage={setCurrentPage} />;
       default:
         return <HomePage setCurrentPage={setCurrentPage} />;
     }
@@ -73,15 +63,35 @@ const App = () => {
   return (
     <AuthProvider>
       <CartProvider>
-        <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        <main style={{ flex: '1', maxWidth: '1200px', margin: '0 auto', padding: '2rem', width: '100%' }}>
-          <Toaster position="top-center" />
-          {renderPage()}
-        </main>
-        <Footer />
+        <div style={styles.appWrapper}>
+          <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          <main style={styles.main}>
+            <Toaster position="top-center" />
+            {renderPage()}
+          </main>
+          <Footer />
+        </div>
       </CartProvider>
     </AuthProvider>
   );
+};
+
+const styles = {
+  appWrapper: {
+    backgroundColor: '#000',
+    color: '#fff',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    fontFamily: "'Poppins', sans-serif",
+  },
+  main: {
+    flex: 1,
+    width: '100%',
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '2rem',
+  },
 };
 
 export default App;
