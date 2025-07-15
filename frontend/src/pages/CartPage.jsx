@@ -48,41 +48,47 @@ const CartPage = ({ setCurrentPage }) => {
 
   return (
     <section style={styles.page}>
-      <h2 style={styles.title}>🛒 Your Cart ({cartItems.length})</h2>
-      <div style={styles.grid}>
-        {/* CART ITEMS */}
-        <div style={styles.cartList}>
-          {cartItems.length === 0 && <p>Your cart is empty.</p>}
-          {cartItems.map((item) => (
-            <div key={item.id} style={styles.cartItem}>
-              <div style={styles.itemRow}>
-                <div style={styles.itemInfoOnly}>
+      <h2 style={styles.title}>Shopping Cart</h2>
+      <div style={styles.container}>
+        {/* Cart Items */}
+        <div style={styles.cartSection}>
+          {cartItems.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            cartItems.map((item) => (
+              <div key={item.id} style={styles.cartItem}>
+                <div>
                   <div style={styles.itemName}>{item.name}</div>
-                  <div style={styles.itemPrice}>Rs. {item.price.toFixed(2)}</div>
-                  <div style={styles.itemTotal}>Total: Rs. {(item.price * item.quantity).toFixed(2)}</div>
-                </div>
-                <div style={styles.itemActions}>
-                  <div style={styles.qtyControl}>
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} style={styles.qtyBtn}>−</button>
-                    <span style={styles.qtyNum}>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={styles.qtyBtn}>+</button>
+                  <div style={styles.itemDetail}>Rs. {item.price.toFixed(2)}</div>
+                  <div style={styles.itemDetail}>Qty: {item.quantity}</div>
+                  <div style={styles.itemTotal}>
+                    Total: Rs. {(item.price * item.quantity).toFixed(2)}
                   </div>
-                  <button onClick={() => removeFromCart(item.id)} style={styles.removeBtn}>×</button>
+                </div>
+                <div>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    style={styles.removeBtn}
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
-        {/* SUMMARY */}
-        <div style={styles.summary}>
-          <h3 style={styles.summaryTitle}>🧾 Order Summary</h3>
-          <div style={styles.section}>
-            <div style={styles.label}>Delivery Address:</div>
+        {/* Order Summary */}
+        <div style={styles.summarySection}>
+          <h3 style={styles.summaryTitle}>Order Summary</h3>
+
+          <div style={styles.summaryRow}>
+            <strong>Delivery Address:</strong>
             <p>DGK, Punjab, Pakistan</p>
           </div>
-          <div style={styles.section}>
-            <div style={styles.label}>Payment Method:</div>
+
+          <div style={styles.summaryRow}>
+            <strong>Payment Method:</strong>
             <select
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
@@ -93,11 +99,25 @@ const CartPage = ({ setCurrentPage }) => {
               <option value="Bank Transfer">Bank Transfer</option>
             </select>
           </div>
-          <div style={styles.priceRow}><span>Subtotal</span><span>Rs. {getCartTotal().toFixed(2)}</span></div>
-          <div style={styles.priceRow}><span>Shipping</span><span>{shippingFee ? `Rs. ${shippingFee}` : "Free"}</span></div>
-          <div style={styles.totalRow}><span>Total</span><span>Rs. {grandTotal.toFixed(2)}</span></div>
 
-          <button style={styles.checkoutBtn} onClick={checkout}>✅ Place Order</button>
+          <div style={styles.summaryRow}>
+            <span>Subtotal:</span>
+            <span>Rs. {getCartTotal().toFixed(2)}</span>
+          </div>
+
+          <div style={styles.summaryRow}>
+            <span>Shipping Fee:</span>
+            <span>{shippingFee ? `Rs. ${shippingFee}` : "Free"}</span>
+          </div>
+
+          <div style={styles.totalRow}>
+            <strong>Total Amount:</strong>
+            <strong>Rs. {grandTotal.toFixed(2)}</strong>
+          </div>
+
+          <button onClick={checkout} style={styles.checkoutBtn}>
+            ✅ Place Order
+          </button>
         </div>
       </div>
     </section>
@@ -106,137 +126,100 @@ const CartPage = ({ setCurrentPage }) => {
 
 const styles = {
   page: {
-    backgroundColor: "#f5f5f5",
+    background: "#f8f8f8",
     padding: "30px 16px",
     fontFamily: "'Poppins', sans-serif",
     minHeight: "100vh",
   },
   title: {
-    fontSize: "1.8rem",
-    fontWeight: "bold",
     textAlign: "center",
-    marginBottom: "2rem",
-    color: "#222",
+    fontSize: "24px",
+    marginBottom: "30px",
+    fontWeight: "bold",
   },
-  grid: {
+  container: {
     display: "flex",
-    flexDirection: "column",
-    gap: "24px",
-    maxWidth: "1150px",
-    margin: "0 auto",
+    flexWrap: "wrap",
+    gap: "20px",
+    justifyContent: "center",
+    alignItems: "flex-start",
   },
-  cartList: {
+  cartSection: {
+    flex: "1 1 100%",
+    maxWidth: "650px",
     display: "flex",
     flexDirection: "column",
     gap: "16px",
   },
   cartItem: {
-    backgroundColor: "#fff",
-    borderRadius: "10px",
-    padding: "16px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-  },
-  itemRow: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
-    gap: "12px",
-  },
-  itemInfoOnly: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "6px",
-    flex: 1,
+    padding: "16px",
+    background: "#fff",
+    borderRadius: "10px",
+    boxShadow: "0 1px 6px rgba(0,0,0,0.1)",
+    flexWrap: "wrap",
   },
   itemName: {
-    fontWeight: "600",
-    fontSize: "1rem",
+    fontWeight: "bold",
+    fontSize: "1.1rem",
   },
-  itemPrice: {
-    color: "#888",
+  itemDetail: {
     fontSize: "0.9rem",
+    color: "#555",
   },
   itemTotal: {
-    fontWeight: "500",
-    fontSize: "0.95rem",
-  },
-  itemActions: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    flexShrink: 0,
-  },
-  qtyControl: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-  },
-  qtyBtn: {
-    padding: "4px 10px",
-    border: "1px solid #bbb",
-    background: "#f1f1f1",
-    borderRadius: "6px",
-    cursor: "pointer",
-  },
-  qtyNum: {
-    minWidth: "24px",
-    textAlign: "center",
+    marginTop: "6px",
     fontWeight: "500",
   },
   removeBtn: {
-    fontSize: "20px",
-    color: "#e53935",
+    fontSize: "24px",
+    color: "#e74c3c",
     background: "none",
     border: "none",
     cursor: "pointer",
-    fontWeight: "bold",
   },
-  summary: {
-    backgroundColor: "#fff",
+  summarySection: {
+    flex: "1 1 100%",
+    maxWidth: "360px",
+    background: "#fff",
+    borderRadius: "10px",
     padding: "24px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+    boxShadow: "0 1px 6px rgba(0,0,0,0.1)",
   },
   summaryTitle: {
-    fontSize: "1.4rem",
-    fontWeight: "bold",
-    marginBottom: "20px",
     textAlign: "center",
+    fontSize: "20px",
+    marginBottom: "20px",
+    fontWeight: "bold",
   },
-  section: {
+  summaryRow: {
     marginBottom: "16px",
-  },
-  label: {
-    fontWeight: "600",
     fontSize: "0.95rem",
-    marginBottom: "6px",
-  },
-  select: {
-    width: "100%",
-    padding: "10px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    fontSize: "0.95rem",
-  },
-  priceRow: {
     display: "flex",
     justifyContent: "space-between",
-    marginTop: "12px",
-    fontSize: "0.95rem",
+    flexWrap: "wrap",
+  },
+  select: {
+    marginTop: "6px",
+    width: "100%",
+    padding: "8px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
   },
   totalRow: {
     display: "flex",
     justifyContent: "space-between",
     fontWeight: "bold",
-    fontSize: "1.1rem",
-    marginTop: "16px",
+    marginTop: "20px",
+    fontSize: "1.05rem",
   },
   checkoutBtn: {
     marginTop: "24px",
     width: "100%",
-    background: "#f57224", // Daraz Orange
+    background: "#f57224",
     color: "#fff",
-    padding: "14px",
+    padding: "12px",
     border: "none",
     borderRadius: "6px",
     fontSize: "1rem",

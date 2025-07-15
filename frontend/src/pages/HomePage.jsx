@@ -1,76 +1,49 @@
 import React from 'react';
+import { useCart } from '../context/CartContext';
+import { ShoppingCart } from 'lucide-react';
 
-const featuredProducts = [
-  {
-    id: 1,
-    title: 'Leather Wallet',
-    price: '$49.99',
-    img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 2,
-    title: 'Sunglasses',
-    price: '$79.99',
-    img: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 3,
-    title: 'Backpack',
-    price: '$89.99',
-    img: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 4,
-    title: 'Smart Watch',
-    price: '$199.99',
-    img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80',
-  },
-];
-
-const shortImages = [
-  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=150&q=80',
-  'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=150&q=80',
-  'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=150&q=80',
-  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=150&q=80',
-];
-
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const HomePageBW = () => {
-  const [width, setWidth] = React.useState(0);
+const HomePageBW = ({ setCurrentPage }) => {
+  const { cartItems } = useCart();
+  const [width, setWidth] = React.useState(window.innerWidth);
   const [hoverIndex, setHoverIndex] = React.useState(null);
   const [shortHoverIndex, setShortHoverIndex] = React.useState(null);
   const [email, setEmail] = React.useState('');
   const [subscribed, setSubscribed] = React.useState(false);
-
-  React.useEffect(() => {
-    // Set initial width safely
-    setWidth(window.innerWidth);
-
-    let timeoutId = null;
-    const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        setWidth(window.innerWidth);
-      }, 150);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   const isMobile = width <= 768;
 
+  React.useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    setSubscribed(true);
+    setEmail('');
+  };
+
+  const featuredProducts = [
+    { id: 1, title: 'Leather Wallet', price: '$49.99', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80' },
+    { id: 2, title: 'Sunglasses', price: '$79.99', img: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
+    { id: 3, title: 'Backpack', price: '$89.99', img: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80' },
+    { id: 4, title: 'Smart Watch', price: '$199.99', img: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80' },
+  ];
+
+  const shortImages = [
+    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=150&q=80',
+    'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=150&q=80',
+    'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=150&q=80',
+    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=150&q=80',
+  ];
+
   const styles = {
-    page: {
-      fontFamily: "'Poppins', sans-serif",
-      backgroundColor: '#fff',
-      color: '#111',
-      lineHeight: '1.6',
-    },
     hero: {
       position: 'relative',
       height: isMobile ? '60vh' : '80vh',
@@ -106,6 +79,30 @@ const HomePageBW = () => {
       fontSize: isMobile ? '1rem' : '1.4rem',
       fontWeight: '300',
     },
+    cartIcon: {
+      position: 'absolute',
+      top: '20px',
+      right: '20px',
+      zIndex: 10,
+      color: '#fff',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '6px',
+      backgroundColor: '#f57224',
+      padding: '8px 14px',
+      borderRadius: '20px',
+      fontWeight: 600,
+      fontSize: '14px',
+    },
+    badge: {
+      backgroundColor: '#fff',
+      color: '#f57224',
+      padding: '2px 8px',
+      borderRadius: '12px',
+      fontSize: '0.8rem',
+      fontWeight: 'bold',
+    },
     section: {
       padding: '60px 20px',
       maxWidth: '1200px',
@@ -123,33 +120,33 @@ const HomePageBW = () => {
       display: 'grid',
       gridTemplateColumns: isMobile
         ? 'repeat(auto-fit, minmax(160px, 1fr))'
-        : 'repeat(auto-fit, minmax(240px, 1fr))',
-      gap: '24px',
+        : 'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: '20px',
     },
     productCard: {
       background: '#fafafa',
-      borderRadius: '12px',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
-      padding: '16px',
+      borderRadius: '10px',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+      padding: '12px',
       textAlign: 'center',
       transition: 'transform 0.3s, box-shadow 0.3s',
       cursor: 'pointer',
     },
     productCardHover: {
-      transform: 'translateY(-6px)',
-      boxShadow: '0 6px 12px rgba(0,0,0,0.1)',
+      transform: 'translateY(-4px)',
+      boxShadow: '0 4px 10px rgba(0,0,0,0.08)',
     },
     productImage: {
       width: '100%',
-      height: '180px',
+      height: '120px', // ↓ reduced height
       objectFit: 'cover',
-      borderRadius: '10px',
-      marginBottom: '16px',
+      borderRadius: '8px',
+      marginBottom: '12px',
     },
     productTitle: {
       fontWeight: '600',
-      fontSize: '1.1rem',
-      marginBottom: '8px',
+      fontSize: '1rem',
+      marginBottom: '6px',
     },
     productPrice: {
       color: '#f57224',
@@ -165,7 +162,7 @@ const HomePageBW = () => {
     },
     shortImage: {
       width: '100%',
-      height: '100px',
+      height: '80px', // ↓ reduced height
       objectFit: 'cover',
       borderRadius: '8px',
       transition: 'transform 0.3s',
@@ -199,10 +196,6 @@ const HomePageBW = () => {
       borderRadius: '6px',
       fontSize: '1rem',
       cursor: 'pointer',
-      transition: 'background-color 0.3s',
-    },
-    subscribeButtonHover: {
-      backgroundColor: '#d05a1a',
     },
     successMessage: {
       marginTop: '12px',
@@ -212,20 +205,15 @@ const HomePageBW = () => {
     },
   };
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (!email.trim() || !emailRegex.test(email)) {
-      alert('Please enter a valid email address');
-      return;
-    }
-    setSubscribed(true);
-    setEmail('');
-  };
-
   return (
     <>
       {/* Hero Section */}
       <section style={styles.hero}>
+        <div style={styles.cartIcon} onClick={() => setCurrentPage('cart')}>
+          <ShoppingCart size={18} />
+          <span>Cart</span>
+          <span style={styles.badge}>{cartCount}</span>
+        </div>
         <img
           src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1400&q=80"
           alt="Hero background"
@@ -249,14 +237,6 @@ const HomePageBW = () => {
               style={{
                 ...styles.productCard,
                 ...(hoverIndex === idx ? styles.productCardHover : {}),
-              }}
-              role="button"
-              tabIndex={0}
-              aria-label={`View details for ${product.title}`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  alert(`Clicked on ${product.title}`); // Example interaction
-                }
               }}
             >
               <img src={product.img} alt={product.title} style={styles.productImage} />
@@ -282,7 +262,6 @@ const HomePageBW = () => {
                 ...styles.shortImage,
                 ...(shortHoverIndex === idx ? styles.shortImageHover : {}),
               }}
-              loading="lazy"
             />
           ))}
         </div>
@@ -307,18 +286,16 @@ const HomePageBW = () => {
         </div>
       </section>
 
-      {/* Newsletter Subscription */}
+      {/* Newsletter */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Subscribe to Our Newsletter</h2>
-        <form style={styles.newsletterForm} onSubmit={handleSubscribe} noValidate>
+        <form style={styles.newsletterForm} onSubmit={handleSubscribe}>
           <input
             type="email"
             placeholder="Enter your email"
-            aria-label="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             style={styles.emailInput}
-            required
           />
           <button type="submit" style={styles.subscribeButton}>
             Subscribe
