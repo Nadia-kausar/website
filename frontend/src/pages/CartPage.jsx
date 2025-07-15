@@ -55,26 +55,20 @@ const CartPage = ({ setCurrentPage }) => {
           {cartItems.length === 0 && <p>Your cart is empty.</p>}
           {cartItems.map((item) => (
             <div key={item.id} style={styles.cartItem}>
-              <div style={styles.itemHeader}>
-                <img
-                  src={item.image || "https://via.placeholder.com/60?text=No+Image"}
-                  alt={item.name}
-                  style={styles.itemImage}
-                />
-                <div style={styles.itemInfo}>
+              <div style={styles.itemRow}>
+                <div style={styles.itemInfoOnly}>
                   <div style={styles.itemName}>{item.name}</div>
                   <div style={styles.itemPrice}>Rs. {item.price.toFixed(2)}</div>
                   <div style={styles.itemTotal}>Total: Rs. {(item.price * item.quantity).toFixed(2)}</div>
                 </div>
-              </div>
-
-              <div style={styles.itemBottom}>
-                <div style={styles.qtyControl}>
-                  <button onClick={() => updateQuantity(item.id, item.quantity - 1)} style={styles.qtyBtn}>−</button>
-                  <span style={styles.qtyNum}>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={styles.qtyBtn}>+</button>
+                <div style={styles.itemActions}>
+                  <div style={styles.qtyControl}>
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} style={styles.qtyBtn}>−</button>
+                    <span style={styles.qtyNum}>{item.quantity}</span>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={styles.qtyBtn}>+</button>
+                  </div>
+                  <button onClick={() => removeFromCart(item.id)} style={styles.removeBtn}>×</button>
                 </div>
-                <button onClick={() => removeFromCart(item.id)} style={styles.removeBtn}>×</button>
               </div>
             </div>
           ))}
@@ -141,24 +135,18 @@ const styles = {
     borderRadius: "10px",
     padding: "16px",
     boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+  },
+  itemRow: {
     display: "flex",
-    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
     gap: "12px",
   },
-  itemHeader: {
-    display: "flex",
-    gap: "16px",
-  },
-  itemImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 8,
-    objectFit: "cover",
-  },
-  itemInfo: {
+  itemInfoOnly: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    gap: "6px",
+    flex: 1,
   },
   itemName: {
     fontWeight: "600",
@@ -172,10 +160,11 @@ const styles = {
     fontWeight: "500",
     fontSize: "0.95rem",
   },
-  itemBottom: {
+  itemActions: {
     display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
+    gap: "12px",
+    flexShrink: 0,
   },
   qtyControl: {
     display: "flex",
@@ -245,7 +234,7 @@ const styles = {
   checkoutBtn: {
     marginTop: "24px",
     width: "100%",
-    background: "#f57224",
+    background: "#f57224", // Daraz Orange
     color: "#fff",
     padding: "14px",
     border: "none",

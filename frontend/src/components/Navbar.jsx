@@ -116,12 +116,13 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
 
 const styles = {
   header: {
-    backgroundColor: '#000',
-    color: '#fff',
+    backgroundColor: '#000', // Black
+    color: '#fff',           // White text
     padding: '1rem',
     position: 'sticky',
     top: 0,
     zIndex: 999,
+    borderBottom: '1px solid #fff', // Line under navbar
   },
   container: {
     maxWidth: '1200px',
@@ -149,13 +150,13 @@ const styles = {
     borderRadius: '6px',
     fontWeight: 600,
     cursor: 'pointer',
-    transition: 'all 0.3s',
+    transition: 'background 0.3s, color 0.3s',
     width: 'auto',
     textAlign: 'center',
   },
   activeLink: {
-    backgroundColor: '#fff',
-    color: '#000',
+    backgroundColor: '#fff',   // White background
+    color: '#000',             // Black text
   },
   mobileLink: {
     width: '100%',
