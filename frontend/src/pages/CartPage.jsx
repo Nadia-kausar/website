@@ -56,6 +56,11 @@ const CartPage = ({ setCurrentPage }) => {
           {cartItems.map((item) => (
             <div key={item.id} style={styles.cartItem}>
               <div style={styles.itemHeader}>
+                <img
+                  src={item.image || "https://via.placeholder.com/60?text=No+Image"}
+                  alt={item.name}
+                  style={styles.itemImage}
+                />
                 <div style={styles.itemInfo}>
                   <div style={styles.itemName}>{item.name}</div>
                   <div style={styles.itemPrice}>Rs. {item.price.toFixed(2)}</div>
@@ -107,7 +112,7 @@ const CartPage = ({ setCurrentPage }) => {
 
 const styles = {
   page: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#f5f5f5",
     padding: "30px 16px",
     fontFamily: "'Poppins', sans-serif",
     minHeight: "100vh",
@@ -121,7 +126,7 @@ const styles = {
   },
   grid: {
     display: "flex",
-    flexDirection: "column-reverse",
+    flexDirection: "column",
     gap: "24px",
     maxWidth: "1150px",
     margin: "0 auto",
@@ -143,6 +148,12 @@ const styles = {
   itemHeader: {
     display: "flex",
     gap: "16px",
+  },
+  itemImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    objectFit: "cover",
   },
   itemInfo: {
     display: "flex",

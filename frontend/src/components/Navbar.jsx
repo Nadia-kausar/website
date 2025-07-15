@@ -116,7 +116,7 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
 
 const styles = {
   header: {
-    backgroundColor: '#f57224', // Daraz-style orange
+    backgroundColor: '#000',
     color: '#fff',
     padding: '1rem',
     position: 'sticky',
@@ -149,13 +149,13 @@ const styles = {
     borderRadius: '6px',
     fontWeight: 600,
     cursor: 'pointer',
-    transition: 'background 0.3s, color 0.3s',
+    transition: 'all 0.3s',
     width: 'auto',
     textAlign: 'center',
   },
   activeLink: {
     backgroundColor: '#fff',
-    color: '#f57224',
+    color: '#000',
   },
   mobileLink: {
     width: '100%',
@@ -168,7 +168,7 @@ const styles = {
     cursor: 'pointer',
     padding: '0.5rem',
     borderRadius: '6px',
-    backgroundColor: '#f57224',
+    backgroundColor: '#000',
   },
   line: {
     width: '25px',
