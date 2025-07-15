@@ -30,6 +30,7 @@ const HomePageBW = () => {
       backgroundColor: '#fff',
       color: '#111',
       lineHeight: '1.6',
+      padding: '0 12px',
     },
     hero: {
       position: 'relative',
@@ -40,14 +41,13 @@ const HomePageBW = () => {
       textAlign: 'center',
       overflow: 'hidden',
       background: '#000',
-      padding: isMobile ? '0 1rem' : '0',
     },
     heroImage: {
       position: 'absolute',
       width: '100%',
       height: '100%',
       objectFit: 'cover',
-      filter: 'brightness(60%)',
+      filter: 'brightness(50%)',
       zIndex: 0,
     },
     heroContent: {
@@ -69,7 +69,11 @@ const HomePageBW = () => {
     section: {
       padding: '60px 20px',
       maxWidth: '1200px',
-      margin: '0 auto',
+      margin: '40px auto',
+      backgroundColor: '#fff',
+      border: '1px solid #eee',
+      borderRadius: '10px',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
     },
     sectionTitle: {
       fontSize: isMobile ? '1.8rem' : '2.2rem',
@@ -92,11 +96,13 @@ const HomePageBW = () => {
       height: '100px',
       objectFit: 'cover',
       borderRadius: '8px',
-      transition: 'transform 0.3s',
+      transition: 'transform 0.3s, box-shadow 0.3s',
       cursor: 'pointer',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
     },
     shortImageHover: {
       transform: 'scale(1.05)',
+      boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
     },
     newsletterForm: {
       display: 'flex',
