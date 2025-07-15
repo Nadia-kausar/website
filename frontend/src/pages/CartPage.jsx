@@ -57,23 +57,43 @@ const CartPage = ({ setCurrentPage }) => {
           ) : (
             cartItems.map((item) => (
               <div key={item.id} style={styles.cartItem}>
-                <div>
+                <div style={styles.details}>
                   <div style={styles.itemName}>{item.name}</div>
-                  <div style={styles.itemDetail}>Rs. {item.price.toFixed(2)}</div>
-                  <div style={styles.itemDetail}>Qty: {item.quantity}</div>
-                  <div style={styles.itemDetail}>
-                    Description: {item.description || "No description provided"}
-                  </div>
-                  <div style={styles.itemTotal}>
-                    Total: Rs. {(item.price * item.quantity).toFixed(2)}
+                  <div style={styles.itemPrice}>Price: Rs. {item.price.toFixed(2)}</div>
+                  <div style={styles.itemDescription}>
+                    Description: {item.description || "No description"}
                   </div>
                 </div>
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  style={styles.removeBtn}
-                >
-                  ×
-                </button>
+
+                <div style={styles.actions}>
+                  <div style={styles.qtyBox}>
+                    <button
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      style={styles.qtyBtn}
+                    >
+                      −
+                    </button>
+                    <span style={styles.qty}>{item.quantity}</span>
+                    <button
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      style={styles.qtyBtn}
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <div style={styles.subtotal}>
+                    Subtotal: Rs. {(item.price * item.quantity).toFixed(2)}
+                  </div>
+
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    style={styles.removeBtn}
+                    title="Remove Item"
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
             ))
           )}
@@ -107,17 +127,24 @@ const CartPage = ({ setCurrentPage }) => {
           </div>
 
           <div style={styles.summaryRow}>
-            <span>Shipping Fee:</span>
+            <span>Shipping:</span>
             <span>{shippingFee ? `Rs. ${shippingFee}` : "Free"}</span>
           </div>
 
           <div style={styles.totalRow}>
-            <strong>Total Amount:</strong>
+            <strong>Total:</strong>
             <strong>Rs. {grandTotal.toFixed(2)}</strong>
           </div>
 
           <button onClick={checkout} style={styles.checkoutBtn}>
             ✅ Place Order
+          </button>
+
+          <button
+            onClick={() => setCurrentPage("products")}
+            style={styles.continueBtn}
+          >
+            🛍️ Continue Shopping
           </button>
         </div>
       </div>
@@ -127,8 +154,8 @@ const CartPage = ({ setCurrentPage }) => {
 
 const styles = {
   page: {
-    background: "#fff", // white background
-    color: "#000",       // black text
+    background: "#fff",
+    color: "#000",
     padding: "30px 16px",
     fontFamily: "'Poppins', sans-serif",
     minHeight: "100vh",
@@ -151,43 +178,78 @@ const styles = {
     maxWidth: "650px",
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
+    gap: "18px",
   },
   cartItem: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "16px",
-    background: "#f9f9f9", // light gray card
+    background: "#f9f9f9",
+    padding: "18px",
     borderRadius: "10px",
-    boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
-    flexWrap: "wrap",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
   },
   itemName: {
     fontWeight: "bold",
     fontSize: "1.1rem",
   },
-  itemDetail: {
-    fontSize: "0.9rem",
+  itemPrice: {
+    fontSize: "0.95rem",
     color: "#333",
   },
-  itemTotal: {
-    marginTop: "6px",
+  itemDescription: {
+    fontSize: "0.9rem",
+    color: "#555",
+  },
+  actions: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: "12px",
+  },
+  qtyBox: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  qtyBtn: {
+    padding: "6px 14px",
+    fontSize: "18px",
+    border: "1px solid #aaa",
+    borderRadius: "6px",
+    cursor: "pointer",
+    background: "#fff",
+  },
+  qty: {
+    minWidth: "30px",
+    textAlign: "center",
+    fontWeight: "600",
+  },
+  subtotal: {
+    fontSize: "1rem",
     fontWeight: "500",
   },
   removeBtn: {
-    fontSize: "24px",
-    color: "#e74c3c",
     background: "none",
     border: "none",
+    fontSize: "22px",
+    color: "#e53935",
+    fontWeight: "bold",
     cursor: "pointer",
   },
   summarySection: {
     flex: "1 1 100%",
     maxWidth: "360px",
-    background: "#f9f9f9", // light gray summary box
+    background: "#f4f4f4",
     borderRadius: "10px",
     padding: "24px",
-    boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
   },
   summaryTitle: {
     textAlign: "center",
@@ -205,7 +267,7 @@ const styles = {
   select: {
     marginTop: "6px",
     width: "100%",
-    padding: "8px",
+    padding: "10px",
     borderRadius: "6px",
     border: "1px solid #ccc",
   },
@@ -214,10 +276,10 @@ const styles = {
     justifyContent: "space-between",
     fontWeight: "bold",
     marginTop: "20px",
-    fontSize: "1.05rem",
+    fontSize: "1.1rem",
   },
   checkoutBtn: {
-    marginTop: "24px",
+    marginTop: "20px",
     width: "100%",
     background: "#f57224",
     color: "#fff",
@@ -225,6 +287,18 @@ const styles = {
     border: "none",
     borderRadius: "6px",
     fontSize: "1rem",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+  continueBtn: {
+    marginTop: "12px",
+    width: "100%",
+    background: "#000",
+    color: "#fff",
+    padding: "10px",
+    border: "none",
+    borderRadius: "6px",
+    fontSize: "0.95rem",
     fontWeight: "bold",
     cursor: "pointer",
   },
