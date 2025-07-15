@@ -68,7 +68,7 @@ const AdminAddProductPage = () => {
 
   return (
     <div style={styles.page}>
-      <h2 style={styles.heading}>📋 Add New Product</h2>
+      <h2 style={styles.heading}>🛠️ Admin Panel – Add Product</h2>
 
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
@@ -76,7 +76,6 @@ const AdminAddProductPage = () => {
           placeholder="Product Title"
           value={product.title}
           onChange={handleChange}
-          required
           style={styles.input}
         />
         <input
@@ -84,7 +83,6 @@ const AdminAddProductPage = () => {
           placeholder="Author / Brand"
           value={product.author}
           onChange={handleChange}
-          required
           style={styles.input}
         />
         <input
@@ -92,7 +90,6 @@ const AdminAddProductPage = () => {
           placeholder="Price (PKR)"
           value={product.price}
           onChange={handleChange}
-          required
           style={styles.input}
         />
         <textarea
@@ -102,15 +99,15 @@ const AdminAddProductPage = () => {
           onChange={handleChange}
           style={styles.textarea}
         ></textarea>
-        <button type="submit" style={styles.button}>Add Product</button>
+        <button type="submit" style={styles.button}>➕ Add Product</button>
       </form>
 
-      <h3 style={styles.subheading}>🛍️ Product List</h3>
+      <h3 style={styles.subheading}>📦 Existing Products</h3>
 
       {loading ? (
-        <p style={{ textAlign: 'center', color: '#888' }}>Loading products...</p>
+        <p style={styles.loading}>Loading products...</p>
       ) : products.length === 0 ? (
-        <p style={{ textAlign: 'center', color: '#999' }}>No products found.</p>
+        <p style={styles.loading}>No products found.</p>
       ) : (
         <div style={styles.productList}>
           {products.map((p) => (
@@ -133,7 +130,7 @@ const AdminAddProductPage = () => {
 
 const styles = {
   page: {
-    backgroundColor: '#f4f4f4',
+    backgroundColor: '#e9ecef', // light gray theme
     minHeight: '100vh',
     padding: '40px 16px',
     fontFamily: "'Poppins', sans-serif",
@@ -143,7 +140,7 @@ const styles = {
     textAlign: 'center',
     marginBottom: '28px',
     fontWeight: 'bold',
-    color: '#333',
+    color: '#2f2f2f',
   },
   form: {
     backgroundColor: '#fff',
@@ -151,7 +148,7 @@ const styles = {
     margin: '0 auto',
     padding: '24px',
     borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
     display: 'flex',
     flexDirection: 'column',
     gap: '14px',
@@ -161,6 +158,7 @@ const styles = {
     borderRadius: '6px',
     border: '1px solid #ccc',
     fontSize: '1rem',
+    width: '100%',
   },
   textarea: {
     padding: '12px',
@@ -170,7 +168,7 @@ const styles = {
     fontSize: '1rem',
   },
   button: {
-    backgroundColor: '#f57224',
+    backgroundColor: '#6c757d',
     color: '#fff',
     border: 'none',
     borderRadius: '6px',
@@ -183,8 +181,13 @@ const styles = {
     fontSize: '22px',
     margin: '40px 0 20px',
     textAlign: 'center',
-    color: '#444',
+    color: '#333',
     fontWeight: '600',
+  },
+  loading: {
+    textAlign: 'center',
+    color: '#666',
+    fontStyle: 'italic',
   },
   productList: {
     maxWidth: '700px',
@@ -200,16 +203,17 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+    boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+    flexWrap: 'wrap',
   },
   productDetails: {
     display: 'flex',
     flexDirection: 'column',
+    gap: '4px',
   },
   productTitle: {
     fontWeight: '600',
     fontSize: '1rem',
-    marginBottom: '6px',
     color: '#222',
   },
   meta: {
@@ -217,25 +221,27 @@ const styles = {
     gap: '10px',
     fontSize: '0.9rem',
     color: '#777',
+    flexWrap: 'wrap',
   },
   tag: {
-    backgroundColor: '#eee',
+    backgroundColor: '#dee2e6',
     padding: '4px 8px',
     borderRadius: '4px',
     fontWeight: '500',
   },
   price: {
     fontWeight: '600',
-    color: '#e53935',
+    color: '#28a745',
   },
   deleteBtn: {
-    background: '#e53935',
+    background: '#dc3545',
     color: '#fff',
     border: 'none',
     padding: '8px 12px',
     borderRadius: '6px',
     cursor: 'pointer',
     fontWeight: 'bold',
+    marginTop: '10px',
   },
 };
 
