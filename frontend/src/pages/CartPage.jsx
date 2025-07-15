@@ -48,12 +48,12 @@ const CartPage = ({ setCurrentPage }) => {
 
   return (
     <section style={styles.page}>
-      <h2 style={styles.title}>Shopping Cart</h2>
+      <h2 style={styles.title}>🛒 Shopping Cart</h2>
       <div style={styles.container}>
         {/* Cart Items */}
         <div style={styles.cartSection}>
           {cartItems.length === 0 ? (
-            <p>Your cart is empty.</p>
+            <p style={styles.empty}>Your cart is empty.</p>
           ) : (
             cartItems.map((item) => (
               <div key={item.id} style={styles.cartItem}>
@@ -61,18 +61,19 @@ const CartPage = ({ setCurrentPage }) => {
                   <div style={styles.itemName}>{item.name}</div>
                   <div style={styles.itemDetail}>Rs. {item.price.toFixed(2)}</div>
                   <div style={styles.itemDetail}>Qty: {item.quantity}</div>
+                  <div style={styles.itemDetail}>
+                    Description: {item.description || "No description provided"}
+                  </div>
                   <div style={styles.itemTotal}>
                     Total: Rs. {(item.price * item.quantity).toFixed(2)}
                   </div>
                 </div>
-                <div>
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    style={styles.removeBtn}
-                  >
-                    ×
-                  </button>
-                </div>
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  style={styles.removeBtn}
+                >
+                  ×
+                </button>
               </div>
             ))
           )}
@@ -126,7 +127,8 @@ const CartPage = ({ setCurrentPage }) => {
 
 const styles = {
   page: {
-    background: "#f8f8f8",
+    background: "#fff", // white background
+    color: "#000",       // black text
     padding: "30px 16px",
     fontFamily: "'Poppins', sans-serif",
     minHeight: "100vh",
@@ -155,9 +157,9 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     padding: "16px",
-    background: "#fff",
+    background: "#f9f9f9", // light gray card
     borderRadius: "10px",
-    boxShadow: "0 1px 6px rgba(0,0,0,0.1)",
+    boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
     flexWrap: "wrap",
   },
   itemName: {
@@ -166,7 +168,7 @@ const styles = {
   },
   itemDetail: {
     fontSize: "0.9rem",
-    color: "#555",
+    color: "#333",
   },
   itemTotal: {
     marginTop: "6px",
@@ -182,10 +184,10 @@ const styles = {
   summarySection: {
     flex: "1 1 100%",
     maxWidth: "360px",
-    background: "#fff",
+    background: "#f9f9f9", // light gray summary box
     borderRadius: "10px",
     padding: "24px",
-    boxShadow: "0 1px 6px rgba(0,0,0,0.1)",
+    boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
   },
   summaryTitle: {
     textAlign: "center",
@@ -225,6 +227,11 @@ const styles = {
     fontSize: "1rem",
     fontWeight: "bold",
     cursor: "pointer",
+  },
+  empty: {
+    fontSize: "1.1rem",
+    textAlign: "center",
+    color: "#555",
   },
 };
 
